@@ -545,7 +545,7 @@ function ClientStep({
   }
 
   return (
-    <div className="grid gap-5 2xl:grid-cols-[1fr_360px]">
+    <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
       <div className="grid gap-4 md:grid-cols-2">
         <Input
           label="Empresa"
@@ -762,7 +762,7 @@ function QuantityStep({
             <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
               Matriz del pedido
             </p>
-            <h3 className="text-2xl font-black tracking-[-0.06em] sm:text-3xl">{product.name}</h3>
+            <h3 className="text-3xl font-black tracking-[-0.06em]">{product.name}</h3>
           </div>
           <div className="rounded-full bg-black px-5 py-3 font-black text-white">
             {combos.reduce((sum, combo) => sum + combo.quantity, 0)} u.
@@ -1531,7 +1531,7 @@ function SummaryStep({
       <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
         <section className="rounded-[34px] bg-black p-6 text-white">
           <CheckCircle size={48} weight="duotone" />
-          <h3 className="mt-5 text-3xl font-black tracking-[-0.07em] sm:text-4xl">
+          <h3 className="mt-5 text-4xl font-black tracking-[-0.07em]">
             Confirmar orden
           </h3>
           <p className="mt-4 text-sm leading-6 text-neutral-400">
@@ -1603,46 +1603,46 @@ function SummaryStep({
   }
 
   return (
-    <div className="grid gap-5 2xl:grid-cols-[1fr_360px]">
+    <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
       <section className="overflow-hidden rounded-[34px] border border-neutral-200 bg-neutral-50 p-4">
         <div
           ref={orderRef}
-          className="mx-auto w-full max-w-5xl rounded-[24px] bg-[#f4f4f1] p-4 text-black sm:rounded-[28px] sm:p-6 md:rounded-[32px] md:p-8"
+          className="mx-auto w-full max-w-5xl rounded-[32px] bg-[#f4f4f1] p-8 text-black"
         >
-          <header className="mb-6 flex flex-col justify-between gap-4 border-b border-black/10 pb-5 md:mb-8 md:flex-row md:items-start md:gap-5 md:pb-6">
+          <header className="mb-8 flex flex-col justify-between gap-5 border-b border-black/10 pb-6 md:flex-row md:items-start">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-500">
                 Filtex · Orden de trabajo
               </p>
-              <h3 className="mt-3 text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">
+              <h3 className="mt-3 text-5xl font-black tracking-[-0.08em]">
                 {orderNumber}
               </h3>
               <p className="mt-2 text-sm text-neutral-500">{createdAt}</p>
             </div>
 
-            <div className="rounded-[20px] bg-black px-5 py-4 text-left text-white sm:rounded-[24px] sm:px-6 sm:py-5 md:text-right">
+            <div className="rounded-[24px] bg-black px-6 py-5 text-right text-white">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">
                 Total
               </p>
-              <p className="text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">{totalUnits}</p>
+              <p className="text-5xl font-black tracking-[-0.08em]">{totalUnits}</p>
               <p className="text-sm text-neutral-400">unidades</p>
             </div>
           </header>
 
-          <section className="mb-6 grid gap-3 sm:grid-cols-2 md:mb-8 lg:grid-cols-4">
+          <section className="mb-8 grid gap-4 md:grid-cols-4">
             <InfoBlock label="Empresa" value={companyName} />
             <InfoBlock label="Contacto" value={contactName} />
             <InfoBlock label="WhatsApp" value={client.whatsapp || "Sin completar"} />
             <InfoBlock label="Email" value={client.email || "Sin completar"} />
           </section>
 
-          <section className="mb-6 rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-5 md:mb-8">
+          <section className="mb-8 rounded-[28px] bg-white p-5">
             <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-end">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
                   Producto
                 </p>
-                <h4 className="text-2xl font-black tracking-[-0.06em] sm:text-3xl">
+                <h4 className="text-3xl font-black tracking-[-0.06em]">
                   {product.name}
                 </h4>
                 <p className="mt-1 text-sm text-neutral-500">SKU {product.sku}</p>
@@ -1653,8 +1653,8 @@ function SummaryStep({
               </p>
             </div>
 
-            <div className="overflow-x-auto rounded-[18px] border border-neutral-200 sm:rounded-[22px]">
-              <table className="w-full min-w-[560px] border-collapse text-xs sm:text-sm">
+            <div className="overflow-hidden rounded-[22px] border border-neutral-200">
+              <table className="w-full border-collapse text-sm">
                 <thead className="bg-black text-white">
                   <tr>
                     <th className="px-4 py-3 text-left">Prenda</th>
@@ -1687,7 +1687,7 @@ function SummaryStep({
             </div>
           </section>
 
-          <section className="mb-6 grid gap-4 md:mb-8 xl:grid-cols-2">
+          <section className="mb-8 grid gap-5 lg:grid-cols-2">
             <OrderGarmentView
               title="Vista delantera"
               image={product.views?.front}
@@ -1703,7 +1703,7 @@ function SummaryStep({
             />
           </section>
 
-          <section className="mb-6 rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-5 md:mb-8">
+          <section className="mb-8 rounded-[28px] bg-white p-5">
             <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
               Aplicaciones
             </p>
@@ -1731,7 +1731,7 @@ function SummaryStep({
           </section>
 
           {client.notes && (
-            <section className="rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-5">
+            <section className="rounded-[28px] bg-white p-5">
               <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
                 Observaciones
               </p>
@@ -1743,7 +1743,7 @@ function SummaryStep({
 
       <aside className="rounded-[34px] bg-black p-6 text-white">
         <CheckCircle size={48} weight="duotone" />
-        <h3 className="mt-5 text-3xl font-black tracking-[-0.07em] sm:text-4xl">
+        <h3 className="mt-5 text-4xl font-black tracking-[-0.07em]">
           Orden confirmada
         </h3>
         <p className="mt-4 text-sm leading-6 text-neutral-400">
@@ -1754,7 +1754,7 @@ function SummaryStep({
         <div className="mt-8 grid gap-3">
           <button
             onClick={downloadJpg}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-black text-black transition hover:scale-[1.02] sm:px-5 sm:py-4 sm:text-base"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-4 font-black text-black transition hover:scale-[1.02]"
           >
             <DownloadSimple size={20} weight="bold" />
             Descargar orden JPG
@@ -1762,7 +1762,7 @@ function SummaryStep({
 
           <button
             onClick={sendByWhatsapp}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-4 py-3 text-sm font-black text-white transition hover:bg-white/[0.16] sm:px-5 sm:py-4 sm:text-base"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-5 py-4 font-black text-white transition hover:bg-white/[0.16]"
           >
             <WhatsappLogo size={20} weight="bold" />
             Enviar por WhatsApp
@@ -1770,7 +1770,7 @@ function SummaryStep({
 
           <button
             onClick={sendByEmail}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-4 py-3 text-sm font-black text-white transition hover:bg-white/[0.16] sm:px-5 sm:py-4 sm:text-base"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-5 py-4 font-black text-white transition hover:bg-white/[0.16]"
           >
             <EnvelopeSimple size={20} weight="bold" />
             Enviar por email
@@ -1822,7 +1822,7 @@ function OrderGarmentView({
   decorations: Decoration[];
 }) {
   return (
-    <div className="rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-5">
+    <div className="rounded-[28px] bg-white p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
           {title}
@@ -1832,10 +1832,10 @@ function OrderGarmentView({
         </span>
       </div>
 
-      <div className="relative h-[300px] overflow-hidden rounded-[22px] bg-gradient-to-br from-neutral-50 to-neutral-200 sm:h-[360px] md:h-[430px] sm:rounded-[26px]">
+      <div className="relative h-[430px] overflow-hidden rounded-[26px] bg-gradient-to-br from-neutral-50 to-neutral-200">
         <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:30px_30px]" />
 
-        <div className="absolute left-1/2 top-1/2 h-[270px] w-[230px] -translate-x-1/2 -translate-y-1/2 sm:h-[330px] sm:w-[280px] md:h-[390px] md:w-[330px]">
+        <div className="absolute left-1/2 top-1/2 h-[390px] w-[330px] -translate-x-1/2 -translate-y-1/2">
           {image ? (
             <img
               src={image}
@@ -1891,6 +1891,5 @@ function getStepTitle(step: number) {
   if (step === 3) return "Ubicá los logos";
   return "Orden final";
 }
-
 
 

@@ -7,16 +7,12 @@ import type {
   SetStateAction,
 } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { toJpeg } from "html-to-image";
 import {
   ArrowLeft,
   ArrowRight,
   Buildings,
   CheckCircle,
   ClipboardText,
-  DownloadSimple,
-  EnvelopeSimple,
-  WhatsappLogo,
   CloudArrowUp,
   Eye,
   CoatHanger,
@@ -370,10 +366,10 @@ export default function App() {
                   </button>
                 ) : (
                   <button
-                    disabled
-                    className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-neutral-100 px-6 py-3 font-black text-neutral-400"
+                    onClick={downloadOrder}
+                    className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 font-black text-white transition hover:scale-[1.02]"
                   >
-                    Confirmá abajo
+                    Descargar orden
                     <ClipboardText size={18} weight="bold" />
                   </button>
                 )}
@@ -1458,419 +1454,49 @@ function SummaryStep({
   decorations: Decoration[];
   totalUnits: number;
 }) {
-  const [confirmed, setConfirmed] = useState(false);
-  const orderRef = useRef<HTMLDivElement | null>(null);
-
-  const frontDecorations = decorations.filter((item) => item.side === "Delantera");
-  const backDecorations = decorations.filter((item) => item.side === "Espalda");
-
-  const companyName = client.company || "Cliente sin completar";
-  const contactName = client.contact || "Contacto sin completar";
-  const createdAt = new Date().toLocaleString("es-AR");
-
-  const orderNumber = `FILTEX-${Date.now().toString().slice(-6)}`;
-
-  function cleanFileName(value: string) {
-    return value
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-  }
-
-  async function downloadJpg() {
-    if (!orderRef.current) return;
-
-    const fileName = `orden-${cleanFileName(companyName)}-${orderNumber}.jpg`;
-
-    const dataUrl = await toJpeg(orderRef.current, {
-      quality: 0.96,
-      pixelRatio: 2,
-      backgroundColor: "#f4f4f1",
-      cacheBust: true,
-    });
-
-    const link = document.createElement("a");
-    link.download = fileName;
-    link.href = dataUrl;
-    link.click();
-  }
-
-  function buildMessage() {
-    return [
-      `Orden Filtex ${orderNumber}`,
-      `Cliente: ${companyName}`,
-      `Contacto: ${contactName}`,
-      `Producto: ${product.name}`,
-      `Total: ${totalUnits} unidades`,
-      `Aplicaciones: ${decorations.length}`,
-      "",
-      "Adjunto la orden visual JPG para usar como guía de producción.",
-    ].join("\n");
-  }
-
-  async function sendByWhatsapp() {
-    await downloadJpg();
-
-    const message = encodeURIComponent(buildMessage());
-    window.open(`https://wa.me/?text=${message}`, "_blank");
-  }
-
-  async function sendByEmail() {
-    await downloadJpg();
-
-    const subject = encodeURIComponent(`Orden Filtex ${orderNumber} - ${companyName}`);
-    const body = encodeURIComponent(buildMessage());
-
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-  }
-
-  if (!confirmed) {
-    return (
-      <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
-        <section className="rounded-[34px] bg-black p-6 text-white">
-          <CheckCircle size={48} weight="duotone" />
-          <h3 className="mt-5 text-4xl font-black tracking-[-0.07em]">
-            Confirmar orden
-          </h3>
-          <p className="mt-4 text-sm leading-6 text-neutral-400">
-            Al confirmar, se genera una pantalla visual preparada para descargar como JPG
-            y enviar al taller como guía de producción.
-          </p>
-
-          <button
-            onClick={() => setConfirmed(true)}
-            className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 font-black text-black transition hover:scale-[1.02]"
-          >
-            <CheckCircle size={20} weight="bold" />
-            Confirmar orden
-          </button>
-        </section>
-
-        <section className="rounded-[34px] border border-neutral-200 bg-neutral-50 p-5">
-          <div className="mb-5">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
-              Revisión previa
-            </p>
-            <h3 className="mt-2 text-4xl font-black tracking-[-0.06em]">
-              Resumen del pedido
-            </h3>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            <ReviewCard label="Empresa" value={companyName} />
-            <ReviewCard label="Contacto" value={contactName} />
-            <ReviewCard label="WhatsApp" value={client.whatsapp || "Sin completar"} />
-            <ReviewCard label="Email" value={client.email || "Sin completar"} />
-            <ReviewCard label="Producto" value={product.name} />
-            <ReviewCard label="Total unidades" value={`${totalUnits}`} />
-            <ReviewCard label="Aplicaciones" value={`${decorations.length}`} />
-            <ReviewCard label="Fecha" value={createdAt} />
-          </div>
-
-          <div className="mt-5 rounded-[28px] bg-white p-5">
-            <p className="mb-3 text-sm font-black">Combinaciones</p>
-
-            {combos.length === 0 ? (
-              <p className="text-sm text-neutral-500">No hay combinaciones cargadas.</p>
-            ) : (
-              <div className="grid gap-2">
-                {combos.map((combo) => (
-                  <div
-                    key={combo.id}
-                    className="flex flex-wrap justify-between gap-3 rounded-2xl bg-neutral-100 px-4 py-3 text-sm"
-                  >
-                    <strong>{combo.quantity} unidades</strong>
-                    <span className="text-neutral-500">
-                      {combo.productName} · {combo.color} · Talle {combo.size}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {client.notes && (
-            <div className="mt-5 rounded-[28px] bg-white p-5">
-              <p className="mb-2 text-sm font-black">Observaciones</p>
-              <p className="text-sm leading-6 text-neutral-600">{client.notes}</p>
-            </div>
-          )}
-        </section>
-      </div>
-    );
-  }
+  const order = {
+    client,
+    product,
+    combos,
+    totalUnits,
+    decorations: decorations.map((item) => ({
+      name: item.name,
+      side: item.side,
+      area: item.area,
+      technique: item.technique,
+      logoFile: item.fileName || "Sin archivo cargado",
+      placement: {
+        x: item.x,
+        y: item.y,
+        sizeCm: item.sizeCm,
+        rotation: item.rotation,
+      },
+    })),
+  };
 
   return (
-    <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
-      <section className="overflow-hidden rounded-[34px] border border-neutral-200 bg-neutral-50 p-4">
-        <div
-          ref={orderRef}
-          className="mx-auto w-full max-w-5xl rounded-[32px] bg-[#f4f4f1] p-8 text-black"
-        >
-          <header className="mb-8 flex flex-col justify-between gap-5 border-b border-black/10 pb-6 md:flex-row md:items-start">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-500">
-                Filtex · Orden de trabajo
-              </p>
-              <h3 className="mt-3 text-5xl font-black tracking-[-0.08em]">
-                {orderNumber}
-              </h3>
-              <p className="mt-2 text-sm text-neutral-500">{createdAt}</p>
-            </div>
+    <div className="grid gap-5 xl:grid-cols-[360px_1fr]">
+      <section className="rounded-[34px] bg-black p-6 text-white">
+        <CheckCircle size={48} weight="duotone" />
+        <h3 className="mt-5 text-5xl font-black tracking-[-0.08em]">{totalUnits}</h3>
+        <p className="text-neutral-400">unidades totales</p>
 
-            <div className="rounded-[24px] bg-black px-6 py-5 text-right text-white">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">
-                Total
-              </p>
-              <p className="text-5xl font-black tracking-[-0.08em]">{totalUnits}</p>
-              <p className="text-sm text-neutral-400">unidades</p>
-            </div>
-          </header>
-
-          <section className="mb-8 grid gap-4 md:grid-cols-4">
-            <InfoBlock label="Empresa" value={companyName} />
-            <InfoBlock label="Contacto" value={contactName} />
-            <InfoBlock label="WhatsApp" value={client.whatsapp || "Sin completar"} />
-            <InfoBlock label="Email" value={client.email || "Sin completar"} />
-          </section>
-
-          <section className="mb-8 rounded-[28px] bg-white p-5">
-            <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-end">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
-                  Producto
-                </p>
-                <h4 className="text-3xl font-black tracking-[-0.06em]">
-                  {product.name}
-                </h4>
-                <p className="mt-1 text-sm text-neutral-500">SKU {product.sku}</p>
-              </div>
-
-              <p className="max-w-md text-sm leading-6 text-neutral-500">
-                {product.material}
-              </p>
-            </div>
-
-            <div className="overflow-hidden rounded-[22px] border border-neutral-200">
-              <table className="w-full border-collapse text-sm">
-                <thead className="bg-black text-white">
-                  <tr>
-                    <th className="px-4 py-3 text-left">Prenda</th>
-                    <th className="px-4 py-3 text-left">Color</th>
-                    <th className="px-4 py-3 text-left">Talle</th>
-                    <th className="px-4 py-3 text-right">Cantidad</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {combos.length === 0 ? (
-                    <tr>
-                      <td colSpan={4} className="px-4 py-5 text-center text-neutral-500">
-                        Sin combinaciones cargadas.
-                      </td>
-                    </tr>
-                  ) : (
-                    combos.map((combo) => (
-                      <tr key={combo.id} className="border-b border-neutral-200 last:border-0">
-                        <td className="px-4 py-3 font-bold">{combo.productName}</td>
-                        <td className="px-4 py-3 text-neutral-600">{combo.color}</td>
-                        <td className="px-4 py-3 text-neutral-600">{combo.size}</td>
-                        <td className="px-4 py-3 text-right font-black">
-                          {combo.quantity}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section className="mb-8 grid gap-5 lg:grid-cols-2">
-            <OrderGarmentView
-              title="Vista delantera"
-              image={product.views?.front}
-              productName={product.name}
-              decorations={frontDecorations}
-            />
-
-            <OrderGarmentView
-              title="Vista espalda"
-              image={product.views?.back}
-              productName={product.name}
-              decorations={backDecorations}
-            />
-          </section>
-
-          <section className="mb-8 rounded-[28px] bg-white p-5">
-            <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
-              Aplicaciones
-            </p>
-
-            {decorations.length === 0 ? (
-              <p className="text-sm text-neutral-500">Sin aplicaciones cargadas.</p>
-            ) : (
-              <div className="grid gap-3 md:grid-cols-2">
-                {decorations.map((item, index) => (
-                  <div key={item.id} className="rounded-[22px] bg-neutral-100 p-4">
-                    <p className="font-black">Logo {index + 1}</p>
-                    <p className="mt-1 text-sm text-neutral-600">
-                      {item.side} · {item.area}
-                    </p>
-                    <p className="mt-1 text-sm text-neutral-600">
-                      {item.technique} · {item.sizeCm} cm
-                    </p>
-                    <p className="mt-1 text-xs text-neutral-400">
-                      Posición X {item.x} · Y {item.y} · Rotación {item.rotation}°
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-
-          {client.notes && (
-            <section className="rounded-[28px] bg-white p-5">
-              <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
-                Observaciones
-              </p>
-              <p className="text-sm leading-6 text-neutral-600">{client.notes}</p>
-            </section>
-          )}
+        <div className="mt-8 space-y-4">
+          <SummaryLine label="Empresa" value={client.company || "Sin completar"} />
+          <SummaryLine label="Contacto" value={client.contact || "Sin completar"} />
+          <SummaryLine label="Producto" value={product.name} />
+          <SummaryLine label="Aplicaciones" value={`${decorations.length}`} />
         </div>
       </section>
 
-      <aside className="rounded-[34px] bg-black p-6 text-white">
-        <CheckCircle size={48} weight="duotone" />
-        <h3 className="mt-5 text-4xl font-black tracking-[-0.07em]">
-          Orden confirmada
-        </h3>
-        <p className="mt-4 text-sm leading-6 text-neutral-400">
-          Descargá la orden visual como JPG. Para WhatsApp o email, la app abre el mensaje
-          preparado y descargará el JPG para adjuntarlo manualmente.
+      <section className="rounded-[34px] bg-neutral-950 p-5 text-white">
+        <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-neutral-500">
+          JSON de orden de trabajo
         </p>
-
-        <div className="mt-8 grid gap-3">
-          <button
-            onClick={downloadJpg}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-4 font-black text-black transition hover:scale-[1.02]"
-          >
-            <DownloadSimple size={20} weight="bold" />
-            Descargar orden JPG
-          </button>
-
-          <button
-            onClick={sendByWhatsapp}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-5 py-4 font-black text-white transition hover:bg-white/[0.16]"
-          >
-            <WhatsappLogo size={20} weight="bold" />
-            Enviar por WhatsApp
-          </button>
-
-          <button
-            onClick={sendByEmail}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-5 py-4 font-black text-white transition hover:bg-white/[0.16]"
-          >
-            <EnvelopeSimple size={20} weight="bold" />
-            Enviar por email
-          </button>
-
-          <button
-            onClick={() => setConfirmed(false)}
-            className="mt-3 rounded-full border border-white/20 px-5 py-4 font-black text-white transition hover:bg-white/[0.08]"
-          >
-            Volver a revisar
-          </button>
-        </div>
-      </aside>
-    </div>
-  );
-}
-
-function ReviewCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-[24px] bg-white p-5">
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-neutral-400">
-        {label}
-      </p>
-      <p className="mt-2 font-black">{value}</p>
-    </div>
-  );
-}
-
-function InfoBlock({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-[22px] bg-white p-4">
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-neutral-400">
-        {label}
-      </p>
-      <p className="mt-2 text-sm font-black">{value}</p>
-    </div>
-  );
-}
-
-function OrderGarmentView({
-  title,
-  image,
-  productName,
-  decorations,
-}: {
-  title: string;
-  image?: string;
-  productName: string;
-  decorations: Decoration[];
-}) {
-  return (
-    <div className="rounded-[28px] bg-white p-5">
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
-          {title}
-        </p>
-        <span className="rounded-full bg-black px-3 py-1 text-xs font-black text-white">
-          {decorations.length} logos
-        </span>
-      </div>
-
-      <div className="relative h-[430px] overflow-hidden rounded-[26px] bg-gradient-to-br from-neutral-50 to-neutral-200">
-        <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:30px_30px]" />
-
-        <div className="absolute left-1/2 top-1/2 h-[390px] w-[330px] -translate-x-1/2 -translate-y-1/2">
-          {image ? (
-            <img
-              src={image}
-              alt={`${productName} ${title}`}
-              draggable={false}
-              className="absolute inset-0 h-full w-full object-contain drop-shadow-2xl"
-            />
-          ) : (
-            <div className="absolute inset-0 grid place-items-center rounded-[24px] bg-white/80 text-center text-xs font-black text-neutral-400">
-              Falta imagen
-            </div>
-          )}
-
-          {decorations.map((decoration) => (
-            <div
-              key={decoration.id}
-              className="absolute z-20 grid min-h-10 min-w-16 place-items-center border-2 border-dashed border-white/85 bg-white/5 p-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-[1px]"
-              style={{
-                left: `${decoration.x}%`,
-                top: `${decoration.y}%`,
-                transform: `translate(-50%, -50%) scale(${getVisualScale(decoration.sizeCm)}) rotate(${decoration.rotation}deg)`,
-              }}
-            >
-              {decoration.imageUrl ? (
-                <img
-                  src={decoration.imageUrl}
-                  className="max-h-20 max-w-32 object-contain"
-                />
-              ) : (
-                <span>{decoration.sizeCm} cm</span>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+        <pre className="max-h-[620px] overflow-auto rounded-[24px] bg-black p-5 text-xs leading-5 text-neutral-300">
+          {JSON.stringify(order, null, 2)}
+        </pre>
+      </section>
     </div>
   );
 }
@@ -1891,5 +1517,4 @@ function getStepTitle(step: number) {
   if (step === 3) return "Ubicá los logos";
   return "Orden final";
 }
-
 

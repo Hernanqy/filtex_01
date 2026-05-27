@@ -1,0 +1,58 @@
+import type { Product } from "../types/order";
+
+export const products: Product[] = [
+  {
+    id: "remera-unisex",
+    name: "Remera unisex",
+    line: "Línea básica",
+    sku: "Fu00006",
+    material: "Jersey de algodón peinado 24/1. 100% algodón.",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+    colors: ["Negro", "Gris topo", "Gris melange", "Blanco", "Azul marino"],
+  },
+  {
+    id: "buzo-unisex",
+    name: "Buzo unisex",
+    line: "Línea básica",
+    sku: "Fu00009",
+    material: "Friza invisible. 100% algodón.",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+    colors: ["Negro", "Gris topo", "Gris melange", "Azul marino"],
+  },
+  {
+    id: "chomba-pique",
+    name: "Chomba piqué",
+    line: "Línea oficina",
+    sku: "Fh00004 / Fm00004",
+    material: "Piqué 70% algodón - 30% poliéster.",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+    colors: ["Negro", "Gris melange", "Blanco", "Azul marino"],
+  },
+  {
+    id: "camisa-oficina",
+    name: "Camisa oficina",
+    line: "Línea oficina",
+    sku: "Fh00007 / Fm00001",
+    material: "Algodón con spandex. 97% algodón - 3% spandex.",
+    sizes: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    colors: ["Blanco", "Celeste"],
+  },
+  {
+    id: "pantalon-cargo",
+    name: "Pantalón cargo",
+    line: "Línea industria",
+    sku: "Fh00014",
+    material: "Gabardina con spandex 8 onzas.",
+    sizes: ["30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50"],
+    colors: ["Negro", "Azul marino"],
+  },
+  {
+    id: "campera-softshell",
+    name: "Campera Softshell",
+    line: "Línea abrigos",
+    sku: "Fh00002",
+    material: "Exterior softshell. Interior micro polar térmico.",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+    colors: ["Negro", "Azul marino"],
+  },
+];

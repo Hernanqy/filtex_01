@@ -271,40 +271,6 @@ export default function App() {
     });
   }
 
-  function downloadOrder() {
-    const order = {
-      createdAt: new Date().toLocaleString("es-AR"),
-      client,
-      product: selectedProduct,
-      combos,
-      totalUnits,
-      decorations: decorations.map((item) => ({
-        name: item.name,
-        area: item.area,
-        side: item.side,
-        technique: item.technique,
-        logoFile: item.fileName || "Sin archivo cargado",
-        placement: {
-          x: item.x,
-          y: item.y,
-          sizeCm: item.sizeCm,
-          rotation: item.rotation,
-        },
-      })),
-    };
-
-    const blob = new Blob([JSON.stringify(order, null, 2)], {
-      type: "application/json",
-    });
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `orden-filtex-${Date.now()}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <main className="min-h-screen bg-[#f4f4f1] text-black">
       <div className="mx-auto flex min-h-screen max-w-[1500px] flex-col p-4 md:p-6">
@@ -1875,15 +1841,6 @@ function OrderGarmentView({
   );
 }
 
-function SummaryLine({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-b border-white/10 pb-3">
-      <p className="text-xs text-neutral-500">{label}</p>
-      <p className="font-black">{value}</p>
-    </div>
-  );
-}
-
 function getStepTitle(step: number) {
   if (step === 0) return "Datos del cliente";
   if (step === 1) return "Elegí la prenda";
@@ -1891,6 +1848,7 @@ function getStepTitle(step: number) {
   if (step === 3) return "Ubicá los logos";
   return "Orden final";
 }
+
 
 
 

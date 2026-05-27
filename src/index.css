@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 * {
   box-sizing: border-box;
@@ -35,4 +35,113 @@ button {
 
 img {
   display: block;
+}
+
+::selection {
+  background: black;
+  color: white;
+}
+
+/* Fondo sutil de hilos */
+.thread-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  overflow: hidden;
+}
+
+.thread-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 183, 72, 0.06) 15%,
+    rgba(139, 183, 72, 0.18) 50%,
+    rgba(139, 183, 72, 0.06) 85%,
+    transparent 100%
+  );
+  filter: blur(0.3px);
+  transform-origin: center;
+}
+
+.thread-1 {
+  width: 140%;
+  top: 12%;
+  left: -20%;
+  transform: rotate(7deg);
+  animation: driftA 18s ease-in-out infinite alternate;
+}
+
+.thread-2 {
+  width: 135%;
+  top: 26%;
+  left: -18%;
+  transform: rotate(-5deg);
+  animation: driftB 21s ease-in-out infinite alternate;
+}
+
+.thread-3 {
+  width: 150%;
+  top: 41%;
+  left: -24%;
+  transform: rotate(4deg);
+  animation: driftA 24s ease-in-out infinite alternate;
+}
+
+.thread-4 {
+  width: 130%;
+  top: 58%;
+  left: -16%;
+  transform: rotate(-8deg);
+  animation: driftC 20s ease-in-out infinite alternate;
+}
+
+.thread-5 {
+  width: 142%;
+  top: 73%;
+  left: -21%;
+  transform: rotate(6deg);
+  animation: driftB 23s ease-in-out infinite alternate;
+}
+
+.thread-6 {
+  width: 128%;
+  top: 87%;
+  left: -14%;
+  transform: rotate(-4deg);
+  animation: driftC 19s ease-in-out infinite alternate;
+}
+
+@keyframes driftA {
+  0% {
+    transform: translateX(0) rotate(7deg);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(32px) rotate(9deg);
+    opacity: 0.6;
+  }
+}
+
+@keyframes driftB {
+  0% {
+    transform: translateX(0) rotate(-5deg);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(-28px) rotate(-7deg);
+    opacity: 0.55;
+  }
+}
+
+@keyframes driftC {
+  0% {
+    transform: translateX(0) rotate(4deg);
+    opacity: 0.28;
+  }
+  100% {
+    transform: translateX(24px) rotate(6deg);
+    opacity: 0.5;
+  }
 }

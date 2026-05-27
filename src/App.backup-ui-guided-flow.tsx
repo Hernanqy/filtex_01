@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useMemo, useRef, useState } from "react";
 import type {
   Dispatch,
   PointerEvent as ReactPointerEvent,
@@ -13,11 +13,13 @@ import {
   ArrowRight,
   Buildings,
   CheckCircle,
-  CloudArrowUp,
-  CoatHanger,
+  ClipboardText,
   DownloadSimple,
   EnvelopeSimple,
+  WhatsappLogo,
+  CloudArrowUp,
   Eye,
+  CoatHanger,
   Hoodie,
   Package,
   Pants,
@@ -26,10 +28,8 @@ import {
   Sparkle,
   TShirt,
   Trash,
-  WhatsappLogo,
 } from "@phosphor-icons/react";
 
-import filtexLogo from "./assets/filtex-logo.png";
 import remeraFront from "./assets/remera-front.png";
 import remeraBack from "./assets/remera-back.png";
 import modelFront from "./assets/model-front.png";
@@ -213,30 +213,6 @@ function createDecoration(area: LogoArea = "Pecho izquierdo"): Decoration {
   };
 }
 
-function getStepTitle(step: number) {
-  if (step === 0) return "Datos del cliente";
-  if (step === 1) return "Elegí la prenda";
-  if (step === 2) return "Armá el pedido";
-  if (step === 3) return "Ubicá los logos";
-  return "Orden final";
-}
-
-function getStepMessage(step: number) {
-  if (step === 0) return "Empezamos simple: cargá los datos básicos del pedido.";
-  if (step === 1) return "Muy bien. Ahora elegimos la prenda adecuada.";
-  if (step === 2) return "Vamos bien. Definí talles, colores y cantidades.";
-  if (step === 3) return "Ya casi terminamos. Ahora ubicamos los logos.";
-  return "Último paso: revisá todo y generá la orden visual.";
-}
-
-function getCompanionPhrase(step: number) {
-  if (step === 0) return "Te guiamos paso a paso.";
-  if (step === 1) return "Vamos bien, ya elegiste la base del pedido.";
-  if (step === 2) return "Excelente, cada vez falta menos.";
-  if (step === 3) return "Ya queda poco, estamos en la personalización final.";
-  return "Último esfuerzo y queda lista.";
-}
-
 export default function App() {
   const [step, setStep] = useState(0);
   const [client, setClient] = useState<ClientData>(initialClient);
@@ -247,8 +223,6 @@ export default function App() {
   ]);
   const [selectedDecorationId, setSelectedDecorationId] = useState(decorations[0].id);
 
-  const contentRef = useRef<HTMLElement | null>(null);
-
   const selectedProduct = useMemo(() => {
     return products.find((product) => product.id === selectedProductId) ?? products[0];
   }, [selectedProductId]);
@@ -257,17 +231,6 @@ export default function App() {
     decorations.find((item) => item.id === selectedDecorationId) ?? decorations[0];
 
   const totalUnits = combos.reduce((sum, item) => sum + item.quantity, 0);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      contentRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 80);
-
-    return () => window.clearTimeout(timer);
-  }, [step]);
 
   function nextStep() {
     setStep((current) => Math.min(current + 1, steps.length - 1));
@@ -309,82 +272,77 @@ export default function App() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f4f4f1] text-black">
-      <AnimatedThreadsBackground />
-
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1500px] flex-col p-4 md:p-6">
+    <main className="min-h-screen bg-[#f4f4f1] text-black">
+      <div className="mx-auto flex min-h-screen max-w-[1500px] flex-col p-4 md:p-6">
         <TopBar totalUnits={totalUnits} decorationCount={decorations.length} />
 
         <section className="grid flex-1 gap-5 lg:grid-cols-[310px_1fr]">
-          <aside className="rounded-[34px] border border-black/5 bg-white/90 p-5 shadow-xl backdrop-blur-sm">
+          <aside className="rounded-[34px] bg-black p-5 text-white shadow-2xl">
             <div className="mb-8">
-              <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-400">
+              <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-500">
                 Filtex Studio
               </p>
-              <h1 className="mt-3 text-4xl font-black leading-[0.92] tracking-[-0.07em]">
+              <h1 className="mt-3 text-4xl font-black leading-[0.9] tracking-[-0.07em]">
                 Pedido visual guiado
               </h1>
-              <p className="mt-4 text-sm leading-6 text-neutral-500">
-                Un camino claro para que el cliente complete su pedido sin perderse.
+              <p className="mt-4 text-sm leading-6 text-neutral-400">
+                Una experiencia clara para convertir una consulta en una orden de trabajo lista para producción.
               </p>
             </div>
 
             <StepRail currentStep={step} setStep={setStep} />
 
-            <div className="mt-8 rounded-[28px] border border-black/5 bg-[#f7f7f4] p-5">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
-                Estado actual
+            <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.06] p-5">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">
+                Orden actual
               </p>
               <div className="mt-5 space-y-4">
                 <Metric label="Producto" value={selectedProduct.name} />
                 <Metric label="Unidades" value={`${totalUnits}`} />
                 <Metric label="Aplicaciones" value={`${decorations.length}`} />
-                <Metric label="Paso actual" value={steps[step]} />
+                <Metric label="Vista activa" value={selectedDecoration?.side ?? "Delantera"} />
               </div>
             </div>
           </aside>
 
-          <section
-            ref={contentRef}
-            className="rounded-[34px] border border-black/5 bg-white/90 p-4 shadow-2xl backdrop-blur-sm md:p-6"
-          >
-            <div className="mb-6 flex flex-col justify-between gap-4 border-b border-neutral-200 pb-5">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.24em] text-neutral-400">
-                    Paso {step + 1} de {steps.length}
-                  </p>
-                  <h2 className="mt-2 text-4xl font-black tracking-[-0.06em] md:text-6xl">
-                    {getStepTitle(step)}
-                  </h2>
-                  <p className="mt-3 max-w-2xl text-sm leading-6 text-neutral-500">
-                    {getStepMessage(step)}
-                  </p>
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    onClick={prevStep}
-                    disabled={step === 0}
-                    className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-5 py-3 font-black transition hover:bg-neutral-200 disabled:opacity-30"
-                  >
-                    <ArrowLeft size={18} weight="bold" />
-                    Atrás
-                  </button>
-
-                  <button
-                    onClick={nextStep}
-                    disabled={step === steps.length - 1}
-                    className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 font-black text-white transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
-                  >
-                    Siguiente
-                    <ArrowRight size={18} weight="bold" />
-                  </button>
-                </div>
+          <section className="rounded-[34px] border border-black/5 bg-white p-4 shadow-2xl md:p-6">
+            <div className="mb-6 flex flex-col justify-between gap-4 border-b border-neutral-200 pb-5 md:flex-row md:items-end">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-neutral-400">
+                  Paso {step + 1} de {steps.length}
+                </p>
+                <h2 className="mt-2 text-4xl font-black tracking-[-0.06em] md:text-6xl">
+                  {getStepTitle(step)}
+                </h2>
               </div>
 
-              <div className="rounded-2xl border border-[#8bb748]/15 bg-[#8bb748]/6 px-4 py-3 text-sm font-bold text-[#6f9935]">
-                {getCompanionPhrase(step)}
+              <div className="flex gap-2">
+                <button
+                  onClick={prevStep}
+                  disabled={step === 0}
+                  className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-5 py-3 font-black transition hover:bg-neutral-200 disabled:opacity-30"
+                >
+                  <ArrowLeft size={18} weight="bold" />
+                  Atrás
+                </button>
+
+                {step < steps.length - 1 ? (
+                  <button
+                    onClick={nextStep}
+                    className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 font-black text-white transition hover:scale-[1.02]"
+                  >
+                    Continuar
+                    <ArrowRight size={18} weight="bold" />
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-neutral-100 px-6 py-3 font-black text-neutral-400"
+                  >
+                    Confirmá abajo
+                    <ClipboardText size={18} weight="bold" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -394,7 +352,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.22 }}
+                transition={{ duration: 0.25 }}
               >
                 {step === 0 && <ClientStep client={client} setClient={setClient} />}
 
@@ -436,36 +394,12 @@ export default function App() {
                     totalUnits={totalUnits}
                   />
                 )}
-
-                {step < steps.length - 1 && (
-                  <StepCompanion
-                    step={step}
-                    onNext={nextStep}
-                    onPrev={prevStep}
-                    disablePrev={step === 0}
-                  />
-                )}
               </motion.div>
             </AnimatePresence>
           </section>
         </section>
       </div>
     </main>
-  );
-}
-
-function AnimatedThreadsBackground() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="thread-bg">
-        <span className="thread-line thread-1" />
-        <span className="thread-line thread-2" />
-        <span className="thread-line thread-3" />
-        <span className="thread-line thread-4" />
-        <span className="thread-line thread-5" />
-        <span className="thread-line thread-6" />
-      </div>
-    </div>
   );
 }
 
@@ -477,16 +411,11 @@ function TopBar({
   decorationCount: number;
 }) {
   return (
-    <header className="mb-5 flex flex-col justify-between gap-4 rounded-[30px] border border-black/5 bg-white/90 px-5 py-4 shadow-sm backdrop-blur-sm md:flex-row md:items-center">
+    <header className="mb-5 flex flex-col justify-between gap-4 rounded-[30px] bg-white px-5 py-4 shadow-sm md:flex-row md:items-center">
       <div className="flex items-center gap-4">
-        <div className="flex h-16 w-20 items-center justify-center rounded-[22px] border border-black/10 bg-[#f8f8f5] p-2 shadow-sm">
-          <img
-            src={filtexLogo}
-            alt="Filtex"
-            className="h-full w-full rounded-xl object-contain"
-          />
+        <div className="grid size-12 place-items-center rounded-2xl bg-black text-xl font-black text-white">
+          F
         </div>
-
         <div>
           <p className="text-lg font-black tracking-[-0.04em]">Filtex Pedidos</p>
           <p className="text-sm text-neutral-500">
@@ -496,7 +425,7 @@ function TopBar({
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge icon={<Sparkle size={17} weight="fill" />} text="Experiencia guiada" />
+        <Badge icon={<Sparkle size={17} weight="fill" />} text="Studio visual" />
         <Badge icon={<Package size={17} weight="fill" />} text={`${totalUnits} unidades`} />
         <Badge icon={<PenNib size={17} weight="fill" />} text={`${decorationCount} logos`} />
       </div>
@@ -539,20 +468,20 @@ function StepRail({
             onClick={() => setStep(index)}
             className={`flex w-full items-center gap-3 rounded-2xl px-4 py-4 text-left transition ${
               active
-                ? "bg-black text-white shadow-md"
-                : "bg-[#f7f7f4] text-neutral-500 hover:bg-neutral-100 hover:text-black"
+                ? "bg-white text-black"
+                : "bg-white/[0.05] text-neutral-400 hover:bg-white/[0.1] hover:text-white"
             }`}
           >
             <span
               className={`grid size-10 place-items-center rounded-xl ${
-                active ? "bg-white text-black" : "bg-white text-black"
+                active ? "bg-black text-white" : "bg-white/[0.08]"
               }`}
             >
               {icons[index]}
             </span>
             <span>
               <span className="block text-sm font-black">{item}</span>
-              <span className="text-xs opacity-70">Paso {index + 1}</span>
+              <span className="text-xs opacity-60">Paso {index + 1}</span>
             </span>
           </button>
         );
@@ -564,56 +493,8 @@ function StepRail({
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-neutral-400">{label}</p>
-      <p className="mt-1 font-black text-black">{value}</p>
-    </div>
-  );
-}
-
-function StepCompanion({
-  step,
-  onNext,
-  onPrev,
-  disablePrev,
-}: {
-  step: number;
-  onNext: () => void;
-  onPrev: () => void;
-  disablePrev: boolean;
-}) {
-  return (
-    <div className="mt-6 rounded-[28px] border border-[#8bb748]/15 bg-[#8bb748]/7 p-5">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7b9f43]">
-            Seguimos
-          </p>
-          <h3 className="mt-2 text-2xl font-black tracking-[-0.05em]">
-            {getCompanionPhrase(step)}
-          </h3>
-          <p className="mt-2 text-sm leading-6 text-neutral-600">
-            Si querés, podés seguir libremente desde el menú lateral o avanzar con este botón.
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            onClick={onPrev}
-            disabled={disablePrev}
-            className="rounded-full bg-white px-5 py-3 font-black text-black transition hover:bg-neutral-100 disabled:opacity-30"
-          >
-            Atrás
-          </button>
-
-          <button
-            onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 font-black text-white transition hover:scale-[1.02]"
-          >
-            Siguiente paso
-            <ArrowRight size={18} weight="bold" />
-          </button>
-        </div>
-      </div>
+      <p className="text-xs text-neutral-500">{label}</p>
+      <p className="mt-1 font-black text-white">{value}</p>
     </div>
   );
 }
@@ -630,56 +511,56 @@ function ClientStep({
   }
 
   return (
-    <div className="grid gap-5">
-      <div className="rounded-[30px] border border-black/5 bg-[#fafaf8] p-5 md:p-6">
-        <div className="mb-5">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
-            Información del cliente
-          </p>
-          <h3 className="mt-2 text-3xl font-black tracking-[-0.06em]">
-            ¿Quién hace el pedido?
-          </h3>
-        </div>
+    <div className="grid gap-5 2xl:grid-cols-[1fr_360px]">
+      <div className="grid gap-4 md:grid-cols-2">
+        <Input
+          label="Empresa"
+          value={client.company}
+          placeholder="Ej: Clínica Olavarría"
+          onChange={(value) => update("company", value)}
+        />
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <Input
-            label="Empresa"
-            value={client.company}
-            placeholder="Ej: Clínica Olavarría"
-            onChange={(value) => update("company", value)}
+        <Input
+          label="Contacto"
+          value={client.contact}
+          placeholder="Nombre y apellido"
+          onChange={(value) => update("contact", value)}
+        />
+
+        <Input
+          label="WhatsApp"
+          value={client.whatsapp}
+          placeholder="2284..."
+          onChange={(value) => update("whatsapp", value)}
+        />
+
+        <Input
+          label="Email"
+          value={client.email}
+          placeholder="correo@empresa.com"
+          onChange={(value) => update("email", value)}
+        />
+
+        <label className="grid gap-2 md:col-span-2">
+          <span className="text-sm font-black">Observaciones iniciales</span>
+          <textarea
+            value={client.notes}
+            onChange={(event) => update("notes", event.target.value)}
+            placeholder="Fecha estimada, rubro, uso de la prenda, detalles importantes..."
+            className="min-h-44 rounded-[26px] border border-neutral-200 bg-neutral-50 px-5 py-4 outline-none transition focus:border-black focus:bg-white"
           />
+        </label>
+      </div>
 
-          <Input
-            label="Contacto"
-            value={client.contact}
-            placeholder="Nombre y apellido"
-            onChange={(value) => update("contact", value)}
-          />
-
-          <Input
-            label="WhatsApp"
-            value={client.whatsapp}
-            placeholder="2284..."
-            onChange={(value) => update("whatsapp", value)}
-          />
-
-          <Input
-            label="Email"
-            value={client.email}
-            placeholder="correo@empresa.com"
-            onChange={(value) => update("email", value)}
-          />
-
-          <label className="grid gap-2 md:col-span-2">
-            <span className="text-sm font-black">Observaciones iniciales</span>
-            <textarea
-              value={client.notes}
-              onChange={(event) => update("notes", event.target.value)}
-              placeholder="Fecha estimada, rubro, uso de la prenda, detalles importantes..."
-              className="min-h-40 rounded-[26px] border border-neutral-200 bg-white px-5 py-4 outline-none transition focus:border-black"
-            />
-          </label>
-        </div>
+      <div className="rounded-[30px] bg-black p-6 text-white">
+        <Buildings size={42} weight="duotone" />
+        <h3 className="mt-5 text-3xl font-black tracking-[-0.06em]">
+          Primero identificamos la orden.
+        </h3>
+        <p className="mt-4 text-sm leading-6 text-neutral-400">
+          La app tiene que pedir datos sin sentirse como un formulario largo.
+          Cada paso tiene una intención clara.
+        </p>
       </div>
     </div>
   );
@@ -703,7 +584,7 @@ function Input({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="rounded-[22px] border border-neutral-200 bg-white px-5 py-4 outline-none transition focus:border-black"
+        className="rounded-[22px] border border-neutral-200 bg-neutral-50 px-5 py-4 outline-none transition focus:border-black focus:bg-white"
       />
     </label>
   );
@@ -727,7 +608,7 @@ function ProductStep({
           className={`group rounded-[30px] border p-5 text-left transition ${
             selectedProductId === product.id
               ? "border-black bg-black text-white shadow-2xl"
-              : "border-neutral-200 bg-[#fafaf8] hover:-translate-y-1 hover:border-black hover:bg-white hover:shadow-xl"
+              : "border-neutral-200 bg-neutral-50 hover:-translate-y-1 hover:border-black hover:bg-white hover:shadow-xl"
           }`}
         >
           <div className="mb-5 flex h-36 items-center justify-center rounded-[24px] bg-white text-black">
@@ -788,11 +669,6 @@ function QuantityStep({
   const [size, setSize] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(10);
 
-  useEffect(() => {
-    setColor(product.colors[0]);
-    setSize(product.sizes[0]);
-  }, [product]);
-
   function addCombo() {
     if (!quantity || quantity < 1) return;
 
@@ -815,10 +691,10 @@ function QuantityStep({
       <section className="rounded-[30px] bg-black p-6 text-white">
         <Package size={42} weight="duotone" />
         <h3 className="mt-5 text-3xl font-black tracking-[-0.06em]">
-          Cargá combinaciones
+          Cargá combinaciones.
         </h3>
         <p className="mt-4 text-sm leading-6 text-neutral-400">
-          Podés dividir el pedido por color, talle y cantidad sin perder claridad.
+          Ideal para pedidos reales: 50 prendas divididas por talle, color y cantidad.
         </p>
 
         <div className="mt-8 grid gap-4">
@@ -846,13 +722,13 @@ function QuantityStep({
         </div>
       </section>
 
-      <section className="rounded-[30px] border border-neutral-200 bg-[#fafaf8] p-5">
+      <section className="rounded-[30px] border border-neutral-200 bg-neutral-50 p-5">
         <div className="mb-5 flex items-center justify-between gap-4">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
               Matriz del pedido
             </p>
-            <h3 className="text-3xl font-black tracking-[-0.06em]">{product.name}</h3>
+            <h3 className="text-2xl font-black tracking-[-0.06em] sm:text-3xl">{product.name}</h3>
           </div>
           <div className="rounded-full bg-black px-5 py-3 font-black text-white">
             {combos.reduce((sum, combo) => sum + combo.quantity, 0)} u.
@@ -992,7 +868,7 @@ function LogoStudio({
             </p>
             <h3 className="text-4xl font-black tracking-[-0.06em]">{product.name}</h3>
             <p className="mt-2 text-sm text-neutral-500">
-              Arrastrá el logo sobre la prenda y definí exactamente su ubicación.
+              Arrastrá el logo directamente sobre la prenda. Podés tener más de una aplicación.
             </p>
           </div>
 
@@ -1227,7 +1103,7 @@ function ModelPreviewModal({
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
-          <div className="relative min-h-[520px] overflow-hidden rounded-[32px] bg-gradient-to-br from-white via-neutral-100 to-neutral-300 sm:min-h-[720px]">
+          <div className="relative min-h-[720px] overflow-hidden rounded-[32px] bg-gradient-to-br from-white via-neutral-100 to-neutral-300">
             <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:34px_34px]" />
 
             <img
@@ -1237,7 +1113,7 @@ function ModelPreviewModal({
               className="absolute inset-0 h-full w-full object-contain"
             />
 
-            <div className="absolute left-1/2 top-[55%] h-[320px] w-[250px] -translate-x-1/2 -translate-y-1/2 sm:h-[470px] sm:w-[390px]">
+            <div className="absolute left-1/2 top-[55%] h-[470px] w-[390px] -translate-x-1/2 -translate-y-1/2">
               {garmentImage ? (
                 <img
                   src={garmentImage}
@@ -1557,6 +1433,7 @@ function SummaryStep({
   const companyName = client.company || "Cliente sin completar";
   const contactName = client.contact || "Contacto sin completar";
   const createdAt = new Date().toLocaleString("es-AR");
+
   const orderNumber = `FILTEX-${Date.now().toString().slice(-6)}`;
 
   function cleanFileName(value: string) {
@@ -1601,14 +1478,17 @@ function SummaryStep({
 
   async function sendByWhatsapp() {
     await downloadJpg();
+
     const message = encodeURIComponent(buildMessage());
     window.open(`https://wa.me/?text=${message}`, "_blank");
   }
 
   async function sendByEmail() {
     await downloadJpg();
+
     const subject = encodeURIComponent(`Orden Filtex ${orderNumber} - ${companyName}`);
     const body = encodeURIComponent(buildMessage());
+
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   }
 
@@ -1617,11 +1497,12 @@ function SummaryStep({
       <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
         <section className="rounded-[34px] bg-black p-6 text-white">
           <CheckCircle size={48} weight="duotone" />
-          <h3 className="mt-5 text-4xl font-black tracking-[-0.07em]">
+          <h3 className="mt-5 text-3xl font-black tracking-[-0.07em] sm:text-4xl">
             Confirmar orden
           </h3>
           <p className="mt-4 text-sm leading-6 text-neutral-400">
-            Revisá todo una última vez. Luego generamos una ficha visual lista para el taller.
+            Al confirmar, se genera una pantalla visual preparada para descargar como JPG
+            y enviar al taller como guía de producción.
           </p>
 
           <button
@@ -1633,7 +1514,7 @@ function SummaryStep({
           </button>
         </section>
 
-        <section className="rounded-[34px] border border-neutral-200 bg-[#fafaf8] p-5">
+        <section className="rounded-[34px] border border-neutral-200 bg-neutral-50 p-5">
           <div className="mb-5">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
               Revisión previa
@@ -1695,33 +1576,21 @@ function SummaryStep({
           className="mx-auto w-full max-w-5xl rounded-[24px] bg-[#f4f4f1] p-4 text-black sm:rounded-[28px] sm:p-6 md:rounded-[32px] md:p-8"
         >
           <header className="mb-6 flex flex-col justify-between gap-4 border-b border-black/10 pb-5 md:mb-8 md:flex-row md:items-start md:gap-5 md:pb-6">
-            <div className="flex items-start gap-4">
-              <div className="hidden h-16 w-20 items-center justify-center rounded-[18px] border border-black/10 bg-white p-2 shadow-sm sm:flex">
-                <img
-                  src={filtexLogo}
-                  alt="Filtex"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-500">
-                  Filtex · Orden de trabajo
-                </p>
-                <h3 className="mt-3 text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">
-                  {orderNumber}
-                </h3>
-                <p className="mt-2 text-sm text-neutral-500">{createdAt}</p>
-              </div>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-500">
+                Filtex · Orden de trabajo
+              </p>
+              <h3 className="mt-3 text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">
+                {orderNumber}
+              </h3>
+              <p className="mt-2 text-sm text-neutral-500">{createdAt}</p>
             </div>
 
             <div className="rounded-[20px] bg-black px-5 py-4 text-left text-white sm:rounded-[24px] sm:px-6 sm:py-5 md:text-right">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">
                 Total
               </p>
-              <p className="text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">
-                {totalUnits}
-              </p>
+              <p className="text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">{totalUnits}</p>
               <p className="text-sm text-neutral-400">unidades</p>
             </div>
           </header>
@@ -1828,7 +1697,7 @@ function SummaryStep({
           </section>
 
           {client.notes && (
-            <section className="rounded-[28px] bg-white p-5">
+            <section className="rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-5">
               <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
                 Observaciones
               </p>
@@ -1971,3 +1840,15 @@ function OrderGarmentView({
     </div>
   );
 }
+
+function getStepTitle(step: number) {
+  if (step === 0) return "Datos del cliente";
+  if (step === 1) return "Elegí la prenda";
+  if (step === 2) return "Armá el pedido";
+  if (step === 3) return "Ubicá los logos";
+  return "Orden final";
+}
+
+
+
+

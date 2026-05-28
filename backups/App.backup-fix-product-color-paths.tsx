@@ -225,24 +225,7 @@ function getVisualScale(sizeCm: LogoSizeCm) {
 }
 
 function getProductViews(product: Product, color: string) {
-  if (product.id === "remera-unisex") {
-    const colorFiles: Record<string, string> = {
-      "Negro": "negro",
-      "Gris topo": "gris-topo",
-      "Gris melange": "gris-melange",
-      "Blanco": "blanco",
-      "Azul marino": "azul-marino",
-    };
-
-    const fileKey = colorFiles[color] ?? "negro";
-
-    return {
-      front: `/products/remera-unisex/${fileKey}-front.png`,
-      back: `/products/remera-unisex/${fileKey}-back.png`,
-    };
-  }
-
-  return product.views;
+  return product.viewsByColor?.[color] ?? product.views;
 }
 
 function createDecoration(area: LogoArea = "Pecho izquierdo"): Decoration {
@@ -2056,7 +2039,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

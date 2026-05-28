@@ -47,13 +47,6 @@ type Product = {
     front: string;
     back: string;
   };
-  viewsByColor?: Record<
-    string,
-    {
-      front: string;
-      back: string;
-    }
-  >;
 };
 
 type ClientData = {
@@ -114,28 +107,6 @@ const products: Product[] = [
     views: {
       front: remeraFront,
       back: remeraBack,
-    },
-    viewsByColor: {
-      Negro: {
-        front: "/products/remera-unisex/negro-front.png",
-        back: "/products/remera-unisex/negro-back.png",
-      },
-      "Gris topo": {
-        front: "/products/remera-unisex/gris-topo-front.png",
-        back: "/products/remera-unisex/gris-topo-back.png",
-      },
-      "Gris melange": {
-        front: "/products/remera-unisex/gris-melange-front.png",
-        back: "/products/remera-unisex/gris-melange-back.png",
-      },
-      Blanco: {
-        front: "/products/remera-unisex/blanco-front.png",
-        back: "/products/remera-unisex/blanco-back.png",
-      },
-      "Azul marino": {
-        front: "/products/remera-unisex/azul-marino-front.png",
-        back: "/products/remera-unisex/azul-marino-back.png",
-      },
     },
   },
   {
@@ -224,27 +195,6 @@ function getVisualScale(sizeCm: LogoSizeCm) {
   return sizeCm / 13;
 }
 
-function getProductViews(product: Product, color: string) {
-  if (product.id === "remera-unisex") {
-    const colorFiles: Record<string, string> = {
-      "Negro": "negro",
-      "Gris topo": "gris-topo",
-      "Gris melange": "gris-melange",
-      "Blanco": "blanco",
-      "Azul marino": "azul-marino",
-    };
-
-    const fileKey = colorFiles[color] ?? "negro";
-
-    return {
-      front: `/products/remera-unisex/${fileKey}-front.png`,
-      back: `/products/remera-unisex/${fileKey}-back.png`,
-    };
-  }
-
-  return product.views;
-}
-
 function createDecoration(area: LogoArea = "Pecho izquierdo"): Decoration {
   const preset = getAreaPreset(area);
 
@@ -291,7 +241,6 @@ export default function App() {
   const [step, setStep] = useState(0);
   const [client, setClient] = useState<ClientData>(initialClient);
   const [selectedProductId, setSelectedProductId] = useState(products[0].id);
-  const [selectedColor, setSelectedColor] = useState(products[0].colors[0]);
   const [combos, setCombos] = useState<Combo[]>([]);
   const [decorations, setDecorations] = useState<Decoration[]>([
     createDecoration("Pecho izquierdo"),
@@ -303,10 +252,6 @@ export default function App() {
   const selectedProduct = useMemo(() => {
     return products.find((product) => product.id === selectedProductId) ?? products[0];
   }, [selectedProductId]);
-
-  useEffect(() => {
-    setSelectedColor(selectedProduct.colors[0]);
-  }, [selectedProduct.id]);
 
   const selectedDecoration =
     decorations.find((item) => item.id === selectedDecorationId) ?? decorations[0];
@@ -466,15 +411,12 @@ export default function App() {
                     product={selectedProduct}
                     combos={combos}
                     setCombos={setCombos}
-                    selectedColor={selectedColor}
-                    setSelectedColor={setSelectedColor}
                   />
                 )}
 
                 {step === 3 && (
                   <LogoStudio
                     product={selectedProduct}
-                    selectedColor={selectedColor}
                     decorations={decorations}
                     selectedDecorationId={selectedDecorationId}
                     setSelectedDecorationId={setSelectedDecorationId}
@@ -489,7 +431,6 @@ export default function App() {
                   <SummaryStep
                     client={client}
                     product={selectedProduct}
-                    selectedColor={selectedColor}
                     combos={combos}
                     decorations={decorations}
                     totalUnits={totalUnits}
@@ -838,22 +779,19 @@ function QuantityStep({
   product,
   combos,
   setCombos,
-  selectedColor,
-  setSelectedColor,
 }: {
   product: Product;
   combos: Combo[];
   setCombos: Dispatch<SetStateAction<Combo[]>>;
-  selectedColor: string;
-  setSelectedColor: Dispatch<SetStateAction<string>>;
 }) {
+  const [color, setColor] = useState(product.colors[0]);
   const [size, setSize] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(10);
 
   useEffect(() => {
-    setSelectedColor(product.colors[0]);
+    setColor(product.colors[0]);
     setSize(product.sizes[0]);
-  }, [product, setSelectedColor]);
+  }, [product]);
 
   function addCombo() {
     if (!quantity || quantity < 1) return;
@@ -865,7 +803,7 @@ function QuantityStep({
         productId: product.id,
         productName: product.name,
         sku: product.sku,
-        color: selectedColor,
+        color,
         size,
         quantity,
       },
@@ -884,12 +822,7 @@ function QuantityStep({
         </p>
 
         <div className="mt-8 grid gap-4">
-          <Select
-            label="Color"
-            value={selectedColor}
-            options={product.colors}
-            onChange={setSelectedColor}
-          />
+          <Select label="Color" value={color} options={product.colors} onChange={setColor} />
           <Select label="Talle" value={size} options={product.sizes} onChange={setSize} />
 
           <label className="grid gap-2">
@@ -992,7 +925,6 @@ function Select({
 
 function LogoStudio({
   product,
-  selectedColor,
   decorations,
   selectedDecorationId,
   setSelectedDecorationId,
@@ -1002,7 +934,6 @@ function LogoStudio({
   removeDecoration,
 }: {
   product: Product;
-  selectedColor: string;
   decorations: Decoration[];
   selectedDecorationId: string;
   setSelectedDecorationId: (id: string) => void;
@@ -1107,7 +1038,6 @@ function LogoStudio({
 
         <GarmentCanvas
           product={product}
-          selectedColor={selectedColor}
           side={visibleSide}
           decorations={decorations.filter((item) => item.side === visibleSide)}
           selectedDecorationId={selectedDecorationId}
@@ -1253,7 +1183,6 @@ function LogoStudio({
       {showModelPreview && (
         <ModelPreviewModal
           product={product}
-          selectedColor={selectedColor}
           decorations={decorations.filter((item) => item.side === "Delantera")}
           onClose={() => setShowModelPreview(false)}
         />
@@ -1264,16 +1193,14 @@ function LogoStudio({
 
 function ModelPreviewModal({
   product,
-  selectedColor,
   decorations,
   onClose,
 }: {
   product: Product;
-  selectedColor: string;
   decorations: Decoration[];
   onClose: () => void;
 }) {
-  const garmentImage = getProductViews(product, selectedColor)?.front;
+  const garmentImage = product.views?.front;
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-sm">
@@ -1377,7 +1304,6 @@ function ModelPreviewModal({
 
 function GarmentCanvas({
   product,
-  selectedColor,
   side,
   decorations,
   selectedDecorationId,
@@ -1385,7 +1311,6 @@ function GarmentCanvas({
   updateDecoration,
 }: {
   product: Product;
-  selectedColor: string;
   side: GarmentSide;
   decorations: Decoration[];
   selectedDecorationId: string;
@@ -1416,13 +1341,11 @@ function GarmentCanvas({
     updateDecoration(id, point);
   }
 
-  const productViews = getProductViews(product, selectedColor);
-
   const garmentImage =
-    productViews
+    product.views
       ? side === "Delantera"
-        ? productViews.front
-        : productViews.back
+        ? product.views.front
+        : product.views.back
       : null;
 
   return (
@@ -1615,14 +1538,12 @@ function Range({
 function SummaryStep({
   client,
   product,
-  selectedColor,
   combos,
   decorations,
   totalUnits,
 }: {
   client: ClientData;
   product: Product;
-  selectedColor: string;
   combos: Combo[];
   decorations: Decoration[];
   totalUnits: number;
@@ -1632,7 +1553,6 @@ function SummaryStep({
 
   const frontDecorations = decorations.filter((item) => item.side === "Delantera");
   const backDecorations = decorations.filter((item) => item.side === "Espalda");
-  const productViews = getProductViews(product, selectedColor);
 
   const companyName = client.company || "Cliente sin completar";
   const contactName = client.contact || "Contacto sin completar";
@@ -1672,7 +1592,6 @@ function SummaryStep({
       `Cliente: ${companyName}`,
       `Contacto: ${contactName}`,
       `Producto: ${product.name}`,
-      `Color visual: ${selectedColor}`,
       `Total: ${totalUnits} unidades`,
       `Aplicaciones: ${decorations.length}`,
       "",
@@ -1730,7 +1649,6 @@ function SummaryStep({
             <ReviewCard label="WhatsApp" value={client.whatsapp || "Sin completar"} />
             <ReviewCard label="Email" value={client.email || "Sin completar"} />
             <ReviewCard label="Producto" value={product.name} />
-            <ReviewCard label="Color visual" value={selectedColor} />
             <ReviewCard label="Total unidades" value={`${totalUnits}`} />
             <ReviewCard label="Aplicaciones" value={`${decorations.length}`} />
             <ReviewCard label="Fecha" value={createdAt} />
@@ -1825,9 +1743,6 @@ function SummaryStep({
                   {product.name}
                 </h4>
                 <p className="mt-1 text-sm text-neutral-500">SKU {product.sku}</p>
-                <p className="mt-1 text-sm font-black text-neutral-700">
-                  Color visual: {selectedColor}
-                </p>
               </div>
 
               <p className="max-w-md text-sm leading-6 text-neutral-500">
@@ -1872,14 +1787,14 @@ function SummaryStep({
           <section className="mb-6 grid gap-4 md:mb-8 xl:grid-cols-2">
             <OrderGarmentView
               title="Vista delantera"
-              image={productViews?.front}
+              image={product.views?.front}
               productName={product.name}
               decorations={frontDecorations}
             />
 
             <OrderGarmentView
               title="Vista espalda"
-              image={productViews?.back}
+              image={product.views?.back}
               productName={product.name}
               decorations={backDecorations}
             />
@@ -2056,7 +1971,3 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
-
-

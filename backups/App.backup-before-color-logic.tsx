@@ -115,28 +115,6 @@ const products: Product[] = [
       front: remeraFront,
       back: remeraBack,
     },
-    viewsByColor: {
-      Negro: {
-        front: "/products/remera-unisex/negro-front.png",
-        back: "/products/remera-unisex/negro-back.png",
-      },
-      "Gris topo": {
-        front: "/products/remera-unisex/gris-topo-front.png",
-        back: "/products/remera-unisex/gris-topo-back.png",
-      },
-      "Gris melange": {
-        front: "/products/remera-unisex/gris-melange-front.png",
-        back: "/products/remera-unisex/gris-melange-back.png",
-      },
-      Blanco: {
-        front: "/products/remera-unisex/blanco-front.png",
-        back: "/products/remera-unisex/blanco-back.png",
-      },
-      "Azul marino": {
-        front: "/products/remera-unisex/azul-marino-front.png",
-        back: "/products/remera-unisex/azul-marino-back.png",
-      },
-    },
   },
   {
     id: "buzo-unisex",
@@ -225,24 +203,7 @@ function getVisualScale(sizeCm: LogoSizeCm) {
 }
 
 function getProductViews(product: Product, color: string) {
-  if (product.id === "remera-unisex") {
-    const colorFiles: Record<string, string> = {
-      "Negro": "negro",
-      "Gris topo": "gris-topo",
-      "Gris melange": "gris-melange",
-      "Blanco": "blanco",
-      "Azul marino": "azul-marino",
-    };
-
-    const fileKey = colorFiles[color] ?? "negro";
-
-    return {
-      front: `/products/remera-unisex/${fileKey}-front.png`,
-      back: `/products/remera-unisex/${fileKey}-back.png`,
-    };
-  }
-
-  return product.views;
+  return product.viewsByColor?.[color] ?? product.views;
 }
 
 function createDecoration(area: LogoArea = "Pecho izquierdo"): Decoration {
@@ -1002,7 +963,6 @@ function LogoStudio({
   removeDecoration,
 }: {
   product: Product;
-  selectedColor: string;
   decorations: Decoration[];
   selectedDecorationId: string;
   setSelectedDecorationId: (id: string) => void;
@@ -1269,7 +1229,6 @@ function ModelPreviewModal({
   onClose,
 }: {
   product: Product;
-  selectedColor: string;
   decorations: Decoration[];
   onClose: () => void;
 }) {
@@ -1385,7 +1344,6 @@ function GarmentCanvas({
   updateDecoration,
 }: {
   product: Product;
-  selectedColor: string;
   side: GarmentSide;
   decorations: Decoration[];
   selectedDecorationId: string;
@@ -1622,7 +1580,6 @@ function SummaryStep({
 }: {
   client: ClientData;
   product: Product;
-  selectedColor: string;
   combos: Combo[];
   decorations: Decoration[];
   totalUnits: number;
@@ -1825,9 +1782,6 @@ function SummaryStep({
                   {product.name}
                 </h4>
                 <p className="mt-1 text-sm text-neutral-500">SKU {product.sku}</p>
-                <p className="mt-1 text-sm font-black text-neutral-700">
-                  Color visual: {selectedColor}
-                </p>
               </div>
 
               <p className="max-w-md text-sm leading-6 text-neutral-500">
@@ -2056,7 +2010,4 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
-
 

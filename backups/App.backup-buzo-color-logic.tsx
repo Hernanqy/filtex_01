@@ -225,27 +225,20 @@ function getVisualScale(sizeCm: LogoSizeCm) {
 }
 
 function getProductViews(product: Product, color: string) {
-  const productFolders: Record<string, string> = {
-    "remera-unisex": "remera-unisex",
-    "buzo-unisex": "buzo-unisex",
-  };
+  if (product.id === "remera-unisex") {
+    const colorFiles: Record<string, string> = {
+      "Negro": "negro",
+      "Gris topo": "gris-topo",
+      "Gris melange": "gris-melange",
+      "Blanco": "blanco",
+      "Azul marino": "azul-marino",
+    };
 
-  const colorFiles: Record<string, string> = {
-    "Negro": "negro",
-    "Gris topo": "gris-topo",
-    "Gris melange": "gris-melange",
-    "Blanco": "blanco",
-    "Azul marino": "azul-marino",
-  };
-
-  const folder = productFolders[product.id];
-
-  if (folder) {
     const fileKey = colorFiles[color] ?? "negro";
 
     return {
-      front: `/products/${folder}/${fileKey}-front.png`,
-      back: `/products/${folder}/${fileKey}-back.png`,
+      front: `/products/remera-unisex/${fileKey}-front.png`,
+      back: `/products/remera-unisex/${fileKey}-back.png`,
     };
   }
 
@@ -2063,7 +2056,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

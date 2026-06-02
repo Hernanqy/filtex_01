@@ -233,34 +233,27 @@ function getVisualScale(sizeCm: LogoSizeCm) {
 }
 
 function getProductViews(product: Product, color: string) {
+  const productFolders: Record<string, string> = {
+    "remera-unisex": "remera-unisex",
+    "buzo-unisex": "buzo-unisex",
+  };
+
   const colorFiles: Record<string, string> = {
-    Negro: "negro",
+    "Negro": "negro",
     "Gris topo": "gris-topo",
     "Gris melange": "gris-melange",
-    Blanco: "blanco",
+    "Blanco": "blanco",
     "Azul marino": "azul-marino",
   };
 
-  const fileKey = colorFiles[color] ?? "negro";
+  const folder = productFolders[product.id];
 
-  if (product.id === "remera-unisex") {
-    return {
-      front: `/products/remera-unisex/${fileKey}-front.png`,
-      back: `/products/remera-unisex/${fileKey}-back.png`,
-    };
-  }
+  if (folder) {
+    const fileKey = colorFiles[color] ?? "negro";
 
-  if (product.id === "buzo-unisex") {
     return {
-      front: `/products/buzo-unisex/${fileKey}-front.png`,
-      back: `/products/buzo-unisex/${fileKey}-back.png`,
-    };
-  }
-
-  if (product.id === "chomba-pique") {
-    return {
-      front: `/products/chomba-pique-${fileKey}-front.png`,
-      back: `/products/chomba-pique-${fileKey}-back.png`,
+      front: `/products/${folder}/${fileKey}-front.png`,
+      back: `/products/${folder}/${fileKey}-back.png`,
     };
   }
 
@@ -2078,8 +2071,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
 
 
 

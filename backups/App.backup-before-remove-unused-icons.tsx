@@ -15,6 +15,8 @@ import {
   CheckCircle,
   CloudArrowUp,
   CoatHanger,
+  DownloadSimple,
+  EnvelopeSimple,
   Eye,
   Hoodie,
   Package,
@@ -24,6 +26,7 @@ import {
   Sparkle,
   TShirt,
   Trash,
+  WhatsappLogo,
 } from "@phosphor-icons/react";
 
 import filtexLogo from "./assets/filtex-logo.png";
@@ -2362,7 +2365,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

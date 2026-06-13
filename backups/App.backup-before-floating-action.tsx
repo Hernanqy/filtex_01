@@ -531,52 +531,7 @@ export default function App() {
           </section>
         </section>
       </div>
-
-      <FloatingStepButton
-        step={step}
-        totalSteps={steps.length}
-        onNext={nextStep}
-      />
     </main>
-  );
-}
-
-function FloatingStepButton({
-  step,
-  totalSteps,
-  onNext,
-}: {
-  step: number;
-  totalSteps: number;
-  onNext: () => void;
-}) {
-  if (step >= totalSteps - 1) return null;
-
-  const nextLabel = steps[step + 1];
-  const progress = ((step + 1) / totalSteps) * 100;
-
-  return (
-    <button
-      onClick={onNext}
-      className="filtex-floating-action group"
-      aria-label={`Ir al paso ${step + 2}: ${nextLabel}`}
-    >
-      <span
-        className="filtex-floating-ring"
-        style={{
-          background: `conic-gradient(#22f6c5 ${progress}%, rgba(255,255,255,0.16) ${progress}%)`,
-        }}
-      />
-
-      <span className="filtex-floating-core">
-        <ArrowRight size={26} weight="bold" />
-      </span>
-
-      <span className="filtex-floating-label">
-        <span>Siguiente</span>
-        <strong>{nextLabel}</strong>
-      </span>
-    </button>
   );
 }
 
@@ -1694,9 +1649,7 @@ function SummaryStep({
   decorations: Decoration[];
   totalUnits: number;
 }) {
-  const [phase, setPhase] = useState<"idle" | "processing" | "done">("idle");
-  const [confirmProgress, setConfirmProgress] = useState(0);
-  const [currentCheck, setCurrentCheck] = useState(0);
+  const [confirmed, setConfirmed] = useState(false);
   const orderRef = useRef<HTMLDivElement | null>(null);
 
   const frontDecorations = decorations.filter((item) => item.side === "Delantera");
@@ -1707,48 +1660,6 @@ function SummaryStep({
   const contactName = client.contact || "Contacto sin completar";
   const createdAt = new Date().toLocaleString("es-AR");
   const orderNumber = `FILTEX-${Date.now().toString().slice(-6)}`;
-
-  const checks = [
-    "Validando datos del cliente",
-    "Revisando cantidades y combinaciones",
-    "Preparando guía visual del taller",
-    "Habilitando descarga y envío",
-  ];
-
-  useEffect(() => {
-    if (phase !== "processing") return;
-
-    setConfirmProgress(0);
-    setCurrentCheck(0);
-
-    const startedAt = Date.now();
-    const duration = 2600;
-
-    const timer = window.setInterval(() => {
-      const elapsed = Date.now() - startedAt;
-      const ratio = Math.min(elapsed / duration, 1);
-      const nextProgress = Math.round(ratio * 100);
-
-      setConfirmProgress(nextProgress);
-      setCurrentCheck(Math.min(checks.length - 1, Math.floor(ratio * checks.length)));
-
-      if (ratio >= 1) {
-        window.clearInterval(timer);
-        setConfirmProgress(100);
-        setCurrentCheck(checks.length - 1);
-
-        window.setTimeout(() => {
-          setPhase("done");
-        }, 280);
-      }
-    }, 90);
-
-    return () => window.clearInterval(timer);
-  }, [phase]);
-
-  function startConfirmation() {
-    setPhase("processing");
-  }
 
   function cleanFileName(value: string) {
     return value
@@ -1804,78 +1715,24 @@ function SummaryStep({
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   }
 
-  if (phase === "idle") {
+  if (!confirmed) {
     return (
-      <div className="grid gap-5 xl:grid-cols-[430px_1fr]">
-        <section className="confirm-console rounded-[34px] p-6 text-white">
-          <div className="flex items-start gap-5">
-            <div
-              className="confirm-knob-ring"
-              style={{
-                background:
-                  "conic-gradient(#9cff1a 72%, rgba(255,255,255,0.14) 72%)",
-              }}
-            >
-              <div className="confirm-knob-core">
-                <span>{totalUnits || 0}</span>
-                <small>u.</small>
-              </div>
-            </div>
+      <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
+        <section className="rounded-[34px] bg-black p-6 text-white">
+          <CheckCircle size={48} weight="duotone" />
+          <h3 className="mt-5 text-4xl font-black tracking-[-0.07em]">
+            Confirmar orden
+          </h3>
+          <p className="mt-4 text-sm leading-6 text-neutral-400">
+            Revisá todo una última vez. Luego generamos una ficha visual lista para el taller.
+          </p>
 
-            <div className="min-w-0 flex-1">
-              <p className="confirm-mini-label">Centro de control</p>
-              <h3 className="mt-2 text-4xl font-black tracking-[-0.07em]">
-                Confirmar orden
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-white/70">
-                Revisá la orden y generá una ficha visual clara para producción.
-                La validación se hace en un paso guiado y visual.
-              </p>
-            </div>
-          </div>
-
-          <div className="confirm-console-grid mt-7">
-            <div className="confirm-stat-tile">
-              <span>Producto</span>
-              <strong>{product.name}</strong>
-            </div>
-            <div className="confirm-stat-tile">
-              <span>Color</span>
-              <strong>{selectedColor}</strong>
-            </div>
-            <div className="confirm-stat-tile">
-              <span>Aplicaciones</span>
-              <strong>{decorations.length}</strong>
-            </div>
-            <div className="confirm-stat-tile">
-              <span>Cliente</span>
-              <strong>{client.company || "Sin cargar"}</strong>
-            </div>
-          </div>
-
-          <div className="confirm-equalizer mt-7">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-
-          <div className="confirm-check-list mt-6">
-            {checks.map((item, index) => (
-              <div
-                key={item}
-                className={`confirm-check-item ${index === 0 ? "done" : ""}`}
-              >
-                <span className="confirm-check-dot" />
-                <span>{item}</span>
-              </div>
-            ))}
-          </div>
-
-          <button onClick={startConfirmation} className="confirm-cta mt-8">
-            Generar orden visual
+          <button
+            onClick={() => setConfirmed(true)}
+            className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 font-black text-black transition hover:scale-[1.02]"
+          >
+            <CheckCircle size={20} weight="bold" />
+            Confirmar orden
           </button>
         </section>
 
@@ -1898,6 +1755,7 @@ function SummaryStep({
             <ReviewCard label="Color visual" value={selectedColor} />
             <ReviewCard label="Total unidades" value={`${totalUnits}`} />
             <ReviewCard label="Aplicaciones" value={`${decorations.length}`} />
+            <ReviewCard label="Fecha" value={createdAt} />
           </div>
 
           <div className="mt-5 rounded-[28px] bg-white p-5">
@@ -1933,98 +1791,6 @@ function SummaryStep({
     );
   }
 
-  if (phase === "processing") {
-    return (
-      <div className="grid gap-5 xl:grid-cols-[430px_1fr]">
-        <section className="confirm-console confirm-console-processing rounded-[34px] p-6 text-white">
-          <div className="flex flex-col items-center text-center">
-            <div
-              className="confirm-knob-ring confirm-knob-ring-processing"
-              style={{
-                background: `conic-gradient(#9cff1a ${confirmProgress}%, rgba(255,255,255,0.12) ${confirmProgress}%)`,
-              }}
-            >
-              <div className="confirm-knob-core">
-                <span>{confirmProgress}%</span>
-                <small>scan</small>
-              </div>
-            </div>
-
-            <p className="confirm-mini-label mt-6">Procesando</p>
-            <h3 className="mt-2 text-4xl font-black tracking-[-0.07em]">
-              Generando orden
-            </h3>
-            <p className="mt-3 max-w-md text-sm leading-6 text-white/70">
-              Estamos validando la información y preparando una orden visual lista
-              para el taller.
-            </p>
-          </div>
-
-          <div className="confirm-signal mt-8">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-
-          <div className="confirm-check-list mt-7">
-            {checks.map((item, index) => {
-              const done = index < currentCheck || confirmProgress === 100;
-              const active = index === currentCheck && confirmProgress < 100;
-
-              return (
-                <div
-                  key={item}
-                  className={`confirm-check-item ${done ? "done" : ""} ${active ? "active" : ""}`}
-                >
-                  <span className="confirm-check-dot" />
-                  <span>{item}</span>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="rounded-[34px] border border-neutral-200 bg-[#fafaf8] p-5">
-          <div className="mb-4">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-400">
-              Estado de validación
-            </p>
-            <h3 className="mt-2 text-4xl font-black tracking-[-0.06em]">
-              Orden en preparación
-            </h3>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <ReviewCard label="Empresa" value={companyName} />
-            <ReviewCard label="Producto" value={product.name} />
-            <ReviewCard label="Color visual" value={selectedColor} />
-            <ReviewCard label="Total unidades" value={`${totalUnits}`} />
-          </div>
-
-          <div className="mt-6 rounded-[28px] bg-white p-5">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <p className="text-sm font-black">Avance</p>
-              <span className="text-sm font-black text-[#58b300]">{confirmProgress}%</span>
-            </div>
-
-            <div className="h-3 overflow-hidden rounded-full bg-neutral-200">
-              <div
-                className="confirm-progress-bar"
-                style={{ width: `${confirmProgress}%` }}
-              />
-            </div>
-
-            <p className="mt-4 text-sm text-neutral-500">
-              {checks[currentCheck] ?? checks[checks.length - 1]}
-            </p>
-          </div>
-        </section>
-      </div>
-    );
-  }
-
   return (
     <div className="grid gap-5 2xl:grid-cols-[1fr_360px]">
       <section className="overflow-hidden rounded-[34px] border border-neutral-200 bg-neutral-50 p-4">
@@ -2032,23 +1798,7 @@ function SummaryStep({
           ref={orderRef}
           className="mx-auto w-full max-w-5xl rounded-[24px] bg-[#f4f4f1] p-4 text-black sm:rounded-[28px] sm:p-6 md:rounded-[32px] md:p-8"
         >
-          <div className="order-success-hero mb-6">
-            <div className="order-success-icon">
-              <CheckCircle size={26} weight="fill" />
-            </div>
-
-            <div className="min-w-0 flex-1">
-              <p className="order-success-kicker">Orden generada correctamente</p>
-              <h3 className="order-success-title">
-                La ficha visual está lista
-              </h3>
-              <p className="order-success-text">
-                Podés descargarla en JPG o enviarla como guía de producción.
-              </p>
-            </div>
-          </div>
-
-          <header className="order-sheet-header mb-6 flex flex-col justify-between gap-4 md:mb-8 md:flex-row md:items-start md:gap-5">
+          <header className="mb-6 flex flex-col justify-between gap-4 border-b border-black/10 pb-5 md:mb-8 md:flex-row md:items-start md:gap-5 md:pb-6">
             <div className="flex items-start gap-4">
               <div className="hidden h-16 w-20 items-center justify-center rounded-[18px] border border-black/10 bg-white p-2 shadow-sm sm:flex">
                 <img
@@ -2069,31 +1819,16 @@ function SummaryStep({
               </div>
             </div>
 
-            <div className="order-total-display">
-              <p>Total</p>
-              <strong>{totalUnits}</strong>
-              <span>unidades</span>
+            <div className="rounded-[20px] bg-black px-5 py-4 text-left text-white sm:rounded-[24px] sm:px-6 sm:py-5 md:text-right">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">
+                Total
+              </p>
+              <p className="text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">
+                {totalUnits}
+              </p>
+              <p className="text-sm text-neutral-400">unidades</p>
             </div>
           </header>
-
-          <section className="order-production-summary mb-6">
-            <div>
-              <span>Cliente</span>
-              <strong>{companyName}</strong>
-            </div>
-            <div>
-              <span>Producto</span>
-              <strong>{product.name}</strong>
-            </div>
-            <div>
-              <span>Color visual</span>
-              <strong>{selectedColor}</strong>
-            </div>
-            <div>
-              <span>Aplicaciones</span>
-              <strong>{decorations.length} logos</strong>
-            </div>
-          </section>
 
           <section className="mb-6 grid gap-3 sm:grid-cols-2 md:mb-8 lg:grid-cols-4">
             <InfoBlock label="Empresa" value={companyName} />
@@ -2210,66 +1945,44 @@ function SummaryStep({
         </div>
       </section>
 
-      <aside className="confirm-success-panel order-action-console rounded-[34px] p-6 text-white">
-        <div className="confirm-success-orb">
-          <CheckCircle size={42} weight="fill" />
-        </div>
-
-        <p className="confirm-mini-label mt-6">Orden lista</p>
-        <h3 className="mt-2 text-3xl font-black tracking-[-0.07em] sm:text-4xl">
-          Siguiente acción
+      <aside className="rounded-[34px] bg-black p-6 text-white">
+        <CheckCircle size={48} weight="duotone" />
+        <h3 className="mt-5 text-3xl font-black tracking-[-0.07em] sm:text-4xl">
+          Orden confirmada
         </h3>
-        <p className="mt-4 text-sm leading-6 text-white/72">
-          La orden visual ya fue generada. Elegí cómo querés compartirla o descargala para enviarla manualmente.
+        <p className="mt-4 text-sm leading-6 text-neutral-400">
+          Descargá la orden visual como JPG. Para WhatsApp o email, la app abre el mensaje
+          preparado y descargará el JPG para adjuntarlo manualmente.
         </p>
 
-        <div className="order-action-status mt-6">
-          <span className="order-action-led" />
-          <div>
-            <strong>Ficha disponible</strong>
-            <small>JPG listo para producción</small>
-          </div>
-        </div>
-
-        <div className="confirm-console-grid mt-7">
-          <div className="confirm-stat-tile">
-            <span>Orden</span>
-            <strong>{orderNumber}</strong>
-          </div>
-          <div className="confirm-stat-tile">
-            <span>Cliente</span>
-            <strong>{companyName}</strong>
-          </div>
-          <div className="confirm-stat-tile">
-            <span>Producto</span>
-            <strong>{product.name}</strong>
-          </div>
-          <div className="confirm-stat-tile">
-            <span>Total</span>
-            <strong>{totalUnits} u.</strong>
-          </div>
-        </div>
-
         <div className="mt-8 grid gap-3">
-          <button onClick={downloadJpg} className="confirm-cta">
+          <button
+            onClick={downloadJpg}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-black text-black transition hover:scale-[1.02] sm:px-5 sm:py-4 sm:text-base"
+          >
+            <DownloadSimple size={20} weight="bold" />
             Descargar orden JPG
           </button>
 
-          <button onClick={sendByWhatsapp} className="confirm-cta-secondary">
+          <button
+            onClick={sendByWhatsapp}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-4 py-3 text-sm font-black text-white transition hover:bg-white/[0.16] sm:px-5 sm:py-4 sm:text-base"
+          >
+            <WhatsappLogo size={20} weight="bold" />
             Enviar por WhatsApp
           </button>
 
-          <button onClick={sendByEmail} className="confirm-cta-secondary">
+          <button
+            onClick={sendByEmail}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.1] px-4 py-3 text-sm font-black text-white transition hover:bg-white/[0.16] sm:px-5 sm:py-4 sm:text-base"
+          >
+            <EnvelopeSimple size={20} weight="bold" />
             Enviar por email
           </button>
 
           <button
-            onClick={() => {
-              setPhase("idle");
-              setConfirmProgress(0);
-              setCurrentCheck(0);
-            }}
-            className="confirm-cta-ghost"
+            onClick={() => setConfirmed(false)}
+            className="mt-3 rounded-full border border-white/20 px-5 py-4 font-black text-white transition hover:bg-white/[0.08]"
           >
             Volver a revisar
           </button>
@@ -2365,9 +2078,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
-
 
 
 

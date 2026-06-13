@@ -2032,23 +2032,21 @@ function SummaryStep({
           ref={orderRef}
           className="mx-auto w-full max-w-5xl rounded-[24px] bg-[#f4f4f1] p-4 text-black sm:rounded-[28px] sm:p-6 md:rounded-[32px] md:p-8"
         >
-          <div className="order-success-hero mb-6">
-            <div className="order-success-icon">
-              <CheckCircle size={26} weight="fill" />
+          <div className="confirm-success-banner mb-5 flex items-center gap-3 rounded-[24px] px-4 py-4">
+            <div className="confirm-success-badge-mini">
+              <CheckCircle size={22} weight="fill" />
             </div>
-
-            <div className="min-w-0 flex-1">
-              <p className="order-success-kicker">Orden generada correctamente</p>
-              <h3 className="order-success-title">
-                La ficha visual está lista
-              </h3>
-              <p className="order-success-text">
-                Podés descargarla en JPG o enviarla como guía de producción.
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#4e7d00]">
+                Orden generada
+              </p>
+              <p className="text-sm font-bold text-[#426900]">
+                La ficha visual está lista para descargar y compartir.
               </p>
             </div>
           </div>
 
-          <header className="order-sheet-header mb-6 flex flex-col justify-between gap-4 md:mb-8 md:flex-row md:items-start md:gap-5">
+          <header className="mb-6 flex flex-col justify-between gap-4 border-b border-black/10 pb-5 md:mb-8 md:flex-row md:items-start md:gap-5 md:pb-6">
             <div className="flex items-start gap-4">
               <div className="hidden h-16 w-20 items-center justify-center rounded-[18px] border border-black/10 bg-white p-2 shadow-sm sm:flex">
                 <img
@@ -2069,31 +2067,16 @@ function SummaryStep({
               </div>
             </div>
 
-            <div className="order-total-display">
-              <p>Total</p>
-              <strong>{totalUnits}</strong>
-              <span>unidades</span>
+            <div className="rounded-[20px] bg-black px-5 py-4 text-left text-white sm:rounded-[24px] sm:px-6 sm:py-5 md:text-right">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">
+                Total
+              </p>
+              <p className="text-3xl font-black tracking-[-0.08em] sm:text-4xl md:text-5xl">
+                {totalUnits}
+              </p>
+              <p className="text-sm text-neutral-400">unidades</p>
             </div>
           </header>
-
-          <section className="order-production-summary mb-6">
-            <div>
-              <span>Cliente</span>
-              <strong>{companyName}</strong>
-            </div>
-            <div>
-              <span>Producto</span>
-              <strong>{product.name}</strong>
-            </div>
-            <div>
-              <span>Color visual</span>
-              <strong>{selectedColor}</strong>
-            </div>
-            <div>
-              <span>Aplicaciones</span>
-              <strong>{decorations.length} logos</strong>
-            </div>
-          </section>
 
           <section className="mb-6 grid gap-3 sm:grid-cols-2 md:mb-8 lg:grid-cols-4">
             <InfoBlock label="Empresa" value={companyName} />
@@ -2210,26 +2193,19 @@ function SummaryStep({
         </div>
       </section>
 
-      <aside className="confirm-success-panel order-action-console rounded-[34px] p-6 text-white">
+      <aside className="confirm-success-panel rounded-[34px] p-6 text-white">
         <div className="confirm-success-orb">
           <CheckCircle size={42} weight="fill" />
         </div>
 
-        <p className="confirm-mini-label mt-6">Orden lista</p>
+        <p className="confirm-mini-label mt-6">Éxito</p>
         <h3 className="mt-2 text-3xl font-black tracking-[-0.07em] sm:text-4xl">
-          Siguiente acción
+          Orden confirmada
         </h3>
-        <p className="mt-4 text-sm leading-6 text-white/72">
-          La orden visual ya fue generada. Elegí cómo querés compartirla o descargala para enviarla manualmente.
+        <p className="mt-4 text-sm leading-6 text-white/70">
+          Ya está lista la orden visual. Ahora podés descargarla y enviarla
+          fácilmente al taller o al cliente.
         </p>
-
-        <div className="order-action-status mt-6">
-          <span className="order-action-led" />
-          <div>
-            <strong>Ficha disponible</strong>
-            <small>JPG listo para producción</small>
-          </div>
-        </div>
 
         <div className="confirm-console-grid mt-7">
           <div className="confirm-stat-tile">
@@ -2365,7 +2341,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

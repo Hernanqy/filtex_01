@@ -592,36 +592,17 @@ function AnimatedThreadsBackground() {
 }
 
 function TopBar(_props: { totalUnits: number; decorationCount: number }) {
-  return (
-    <header className="filtex-thread-logo-header">
-      <svg
-        className="filtex-curved-threads"
-        viewBox="0 0 520 120"
-        aria-hidden="true"
-      >
-        <path
-          className="thread thread-a"
-          d="M20 62 C95 8, 160 118, 245 56 S410 22, 500 66"
-        />
-        <path
-          className="thread thread-b"
-          d="M32 80 C120 132, 178 18, 260 72 S398 112, 488 46"
-        />
-        <path
-          className="thread thread-c"
-          d="M70 42 C145 78, 185 38, 250 44 S360 78, 450 36"
-        />
-        <path
-          className="thread thread-d"
-          d="M78 92 C145 58, 200 96, 265 84 S370 42, 455 88"
-        />
-      </svg>
+  void Sparkle;
 
-      <div className="filtex-thread-logo-wrap">
+  return (
+    <header className="filtex-only-logo-header">
+      <div className="filtex-only-logo-glow" />
+
+      <div className="filtex-only-logo-card">
         <img
           src={filtexLogo}
           alt="Filtex"
-          className="filtex-thread-logo-image"
+          className="filtex-only-logo-image"
         />
       </div>
     </header>
@@ -2354,7 +2335,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

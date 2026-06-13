@@ -396,7 +396,7 @@ export default function App() {
                 Filtex Studio
               </p>
               <h1 className="mt-3 text-4xl font-black leading-[0.92] tracking-[-0.07em]">
-                Comencemos
+                Pedido visual guiado
               </h1>
               <p className="mt-4 text-sm leading-6 text-neutral-500">
                 Un camino claro para que el cliente complete su pedido sin perderse.
@@ -2336,7 +2336,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

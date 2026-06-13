@@ -310,18 +310,10 @@ export default function App() {
   const [selectedProductId, setSelectedProductId] = useState(products[0].id);
   const [selectedColor, setSelectedColor] = useState(products[0].colors[0]);
   const [combos, setCombos] = useState<Combo[]>([]);
-
-  const totalUnits = useMemo(
-    () => combos.reduce((sum, combo) => sum + combo.quantity, 0),
-    [combos]
-  );
   const [decorations, setDecorations] = useState<Decoration[]>([
     createDecoration("Pecho izquierdo"),
   ]);
   const [selectedDecorationId, setSelectedDecorationId] = useState(decorations[0].id);
-
-  const selectedDecoration =
-    decorations.find((item) => item.id === selectedDecorationId) ?? decorations[0];
 
   const contentRef = useRef<HTMLElement | null>(null);
 
@@ -2360,8 +2352,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
 
 
 

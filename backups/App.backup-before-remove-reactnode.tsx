@@ -2,6 +2,7 @@
 import type {
   Dispatch,
   PointerEvent as ReactPointerEvent,
+  ReactNode,
   RefObject,
   SetStateAction,
 } from "react";
@@ -2335,7 +2336,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

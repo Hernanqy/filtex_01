@@ -595,42 +595,25 @@ function TopBar(_props: { totalUnits: number; decorationCount: number }) {
     <header className="filtex-thread-logo-header">
       <svg
         className="filtex-curved-threads"
-        viewBox="0 0 1600 140"
-        preserveAspectRatio="none"
+        viewBox="0 0 1440 120"
         aria-hidden="true"
       >
         <path
           className="thread thread-a"
-          d="M0 68 C120 8, 245 126, 410 62 S760 18, 1040 64 S1380 118, 1600 54"
+          d="M0 62 C120 8, 240 118, 380 56 S700 22, 980 66 S1240 110, 1440 54"
         />
         <path
           className="thread thread-b"
-          d="M0 92 C160 132, 280 22, 455 78 S820 118, 1085 46 S1400 14, 1600 76"
+          d="M0 82 C150 132, 260 18, 420 72 S760 112, 1040 46 S1280 8, 1440 72"
         />
         <path
           className="thread thread-c"
-          d="M0 42 C150 82, 288 26, 440 42 S765 86, 1030 38 S1360 10, 1600 34"
+          d="M0 42 C130 78, 250 38, 390 44 S690 78, 930 36 S1200 12, 1440 40"
         />
         <path
           className="thread thread-d"
-          d="M0 112 C180 58, 332 116, 500 90 S840 34, 1125 88 S1425 126, 1600 86"
+          d="M0 92 C150 58, 290 96, 430 84 S760 42, 1040 88 S1260 118, 1440 86"
         />
-        <path
-          className="thread thread-e"
-          d="M0 58 C190 32, 330 104, 520 64 S900 12, 1180 58 S1450 98, 1600 52"
-        />
-
-        <g className="thread-needle">
-          <line className="needle-body" x1="-10" y1="0" x2="10" y2="0" />
-          <circle className="needle-eye" cx="10" cy="0" r="1.7" />
-          <line className="needle-tail" x1="10" y1="0" x2="28" y2="0" />
-          <animateMotion
-            dur="10s"
-            repeatCount="indefinite"
-            rotate="auto"
-            path="M0 68 C120 8, 245 126, 410 62 S760 18, 1040 64 S1380 118, 1600 54"
-          />
-        </g>
       </svg>
 
       <div className="filtex-thread-logo-wrap">
@@ -2370,7 +2353,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

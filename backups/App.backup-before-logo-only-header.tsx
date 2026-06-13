@@ -592,21 +592,47 @@ function AnimatedThreadsBackground() {
   );
 }
 
-function TopBar(_props: { totalUnits: number; decorationCount: number }) {
-  void Sparkle;
-
+function TopBar({
+  totalUnits,
+  decorationCount,
+}: {
+  totalUnits: number;
+  decorationCount: number;
+}) {
   return (
-    <header className="filtex-only-logo-header">
-      <div className="filtex-only-logo-glow" />
+    <header className="mb-5 flex flex-col justify-between gap-4 rounded-[30px] border border-black/5 bg-white/90 px-5 py-4 shadow-sm backdrop-blur-sm md:flex-row md:items-center">
+      <div className="flex items-center gap-4">
+        <div className="flex h-16 w-20 items-center justify-center rounded-[22px] border border-black/10 bg-[#f8f8f5] p-2 shadow-sm">
+          <img
+            src={filtexLogo}
+            alt="Filtex"
+            className="h-full w-full rounded-xl object-contain"
+          />
+        </div>
 
-      <div className="filtex-only-logo-card">
-        <img
-          src={filtexLogo}
-          alt="Filtex"
-          className="filtex-only-logo-image"
-        />
+        <div>
+          <p className="text-lg font-black tracking-[-0.04em]">Filtex Pedidos</p>
+          <p className="text-sm text-neutral-500">
+            Sistema visual para órdenes de indumentaria
+          </p>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge icon={<Sparkle size={17} weight="fill" />} text="Experiencia guiada" />
+        <Badge icon={<Package size={17} weight="fill" />} text={`${totalUnits} unidades`} />
+        <Badge icon={<PenNib size={17} weight="fill" />} text={`${decorationCount} logos`} />
       </div>
     </header>
+  );
+}
+
+function Badge({ icon, text }: { icon: ReactNode; text: string }) {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-4 py-2 text-sm font-bold">
+      {icon}
+      {text}
+    </div>
   );
 }
 
@@ -2336,7 +2362,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

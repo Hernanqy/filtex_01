@@ -20,6 +20,7 @@ import {
   Pants,
   PenNib,
   Plus,
+  Sparkle,
   TShirt,
   Trash,
 } from "@phosphor-icons/react";
@@ -595,24 +596,24 @@ function TopBar(_props: { totalUnits: number; decorationCount: number }) {
     <header className="filtex-thread-logo-header">
       <svg
         className="filtex-curved-threads"
-        viewBox="0 0 1440 120"
+        viewBox="0 0 520 120"
         aria-hidden="true"
       >
         <path
           className="thread thread-a"
-          d="M0 62 C120 8, 240 118, 380 56 S700 22, 980 66 S1240 110, 1440 54"
+          d="M20 62 C95 8, 160 118, 245 56 S410 22, 500 66"
         />
         <path
           className="thread thread-b"
-          d="M0 82 C150 132, 260 18, 420 72 S760 112, 1040 46 S1280 8, 1440 72"
+          d="M32 80 C120 132, 178 18, 260 72 S398 112, 488 46"
         />
         <path
           className="thread thread-c"
-          d="M0 42 C130 78, 250 38, 390 44 S690 78, 930 36 S1200 12, 1440 40"
+          d="M70 42 C145 78, 185 38, 250 44 S360 78, 450 36"
         />
         <path
           className="thread thread-d"
-          d="M0 92 C150 58, 290 96, 430 84 S760 42, 1040 88 S1260 118, 1440 86"
+          d="M78 92 C145 58, 200 96, 265 84 S370 42, 455 88"
         />
       </svg>
 
@@ -2353,8 +2354,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
 
 
 

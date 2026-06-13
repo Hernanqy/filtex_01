@@ -2206,7 +2206,7 @@ img {
 .filtex-curved-threads {
   position: absolute;
   z-index: 1;
-  width: 100vw;
+  width: min(520px, 88vw);
   height: 120px;
   overflow: visible;
   pointer-events: none;
@@ -2309,7 +2309,7 @@ img {
   }
 
   .filtex-curved-threads {
-    width: 100vw;
+    width: min(360px, 94vw);
     height: 94px;
   }
 
@@ -2326,4 +2326,3 @@ img {
     stroke-width: 1.2;
   }
 }
-

@@ -297,7 +297,7 @@ function getStepMessage(step: number) {
 }
 
 function getCompanionPhrase(step: number) {
-  if (step === 0) return "";
+  if (step === 0) return "Te guiamos paso a paso.";
   if (step === 1) return "Vamos bien, ya elegiste la base del pedido.";
   if (step === 2) return "Excelente, cada vez falta menos.";
   if (step === 3) return "Ya queda poco, estamos en la personalización final.";
@@ -322,8 +322,24 @@ export default function App() {
   }, [selectedProductId]);
 
   useEffect(() => {
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-}, [step]);
+    setSelectedColor(selectedProduct.colors[0]);
+  }, [selectedProduct.id]);
+
+  const selectedDecoration =
+    decorations.find((item) => item.id === selectedDecorationId) ?? decorations[0];
+
+  const totalUnits = combos.reduce((sum, item) => sum + item.quantity, 0);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      contentRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
+
+    return () => window.clearTimeout(timer);
+  }, [step]);
 
   function nextStep() {
     setStep((current) => Math.min(current + 1, steps.length - 1));
@@ -380,7 +396,9 @@ export default function App() {
               <h1 className="mt-3 text-4xl font-black leading-[0.92] tracking-[-0.07em]">
                 Comencemos
               </h1>
-              
+              <p className="mt-4 text-sm leading-6 text-neutral-500">
+                Un camino claro para que el cliente complete su pedido sin perderse.
+              </p>
             </div>
 
             <StepRail currentStep={step} setStep={setStep} />
@@ -2352,7 +2370,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

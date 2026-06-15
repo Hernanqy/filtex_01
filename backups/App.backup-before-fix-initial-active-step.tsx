@@ -306,7 +306,6 @@ function getCompanionPhrase(step: number) {
 
 export default function App() {
   const [step, setStep] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
   const [client, setClient] = useState<ClientData>(initialClient);
   const [selectedProductId, setSelectedProductId] = useState(products[0].id);
   const [selectedColor, setSelectedColor] = useState(products[0].colors[0]);
@@ -392,13 +391,7 @@ export default function App() {
               
             </div>
 
-            <StepRail
-          currentStep={hasStarted ? step : -1}
-          setStep={(nextStep) => {
-            setHasStarted(true);
-            setStep(nextStep);
-          }}
-        />
+            <StepRail currentStep={step} setStep={setStep} />
 
             <div className="mt-8 rounded-[28px] border border-black/5 bg-[#f7f7f4] p-5">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
@@ -2368,7 +2361,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

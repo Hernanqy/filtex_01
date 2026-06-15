@@ -2743,26 +2743,3 @@ img {
     stroke-width: 1.2 !important;
   }
 }
-
-/* FILTEX_LOGO_BACKGROUND_LIGHTER_V2 */
-/* Fondo más claro para mejorar lectura del logo, sin tocar lo demás */
-
-.premium-app {
-  background:
-    radial-gradient(
-      1050px 420px at 92% 24%,
-      rgba(29, 183, 130, 0.22) 0%,
-      rgba(29, 183, 130, 0.12) 24%,
-      rgba(29, 183, 130, 0.04) 44%,
-      transparent 62%
-    ),
-    linear-gradient(
-      90deg,
-      #d8e1e5 0%,
-      #cbd8dc 18%,
-      #b7c9cd 38%,
-      #9cb8b6 62%,
-      #7ea89e 82%,
-      #5f9b8a 100%
-    ) !important;
-}

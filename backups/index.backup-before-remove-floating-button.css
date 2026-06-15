@@ -2883,14 +2883,3 @@ html.filtex-step-mode .premium-app {
     padding: 22px !important;
   }
 }
-
-/* REMOVE_FLOATING_STEP_BUTTON_V1 */
-
-.filtex-floating-action,
-.filtex-floating-ring,
-.filtex-floating-core,
-.filtex-floating-label {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}

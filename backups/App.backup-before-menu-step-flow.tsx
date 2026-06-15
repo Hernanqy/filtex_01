@@ -380,7 +380,7 @@ export default function App() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1500px] flex-col p-4 md:p-6">
         <TopBar totalUnits={totalUnits} decorationCount={decorations.length} />
 
-        <section className={`filtex-flow-layout grid flex-1 gap-5 lg:grid-cols-[310px_1fr] ${hasStarted ? "filtex-flow-step" : "filtex-flow-menu"}`}>
+        <section className="grid flex-1 gap-5 lg:grid-cols-[310px_1fr]">
           <aside className="rounded-[34px] border border-black/5 bg-white/90 p-5 shadow-xl backdrop-blur-sm">
             <div className="mb-8">
               <p className="text-xs font-black uppercase tracking-[0.26em] text-neutral-400">
@@ -393,13 +393,12 @@ export default function App() {
             </div>
 
             <StepRail
-              currentStep={hasStarted ? step : -1}
-              setStep={(nextStep) => {
-                setHasStarted(true);
-                setStep(nextStep);
-                window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-              }}
-            />
+          currentStep={hasStarted ? step : -1}
+          setStep={(nextStep) => {
+            setHasStarted(true);
+            setStep(nextStep);
+          }}
+        />
 
             <div className="mt-8 rounded-[28px] border border-black/5 bg-[#f7f7f4] p-5">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
@@ -525,8 +524,51 @@ export default function App() {
         </section>
       </div>
 
-      
+      <FloatingStepButton
+        step={step}
+        totalSteps={steps.length}
+        onNext={nextStep}
+      />
     </main>
+  );
+}
+
+function FloatingStepButton({
+  step,
+  totalSteps,
+  onNext,
+}: {
+  step: number;
+  totalSteps: number;
+  onNext: () => void;
+}) {
+  if (step >= totalSteps - 1) return null;
+
+  const nextLabel = steps[step + 1];
+  const progress = ((step + 1) / totalSteps) * 100;
+
+  return (
+    <button
+      onClick={onNext}
+      className="filtex-floating-action group"
+      aria-label={`Ir al paso ${step + 2}: ${nextLabel}`}
+    >
+      <span
+        className="filtex-floating-ring"
+        style={{
+          background: `conic-gradient(#22f6c5 ${progress}%, rgba(255,255,255,0.16) ${progress}%)`,
+        }}
+      />
+
+      <span className="filtex-floating-core">
+        <ArrowRight size={26} weight="bold" />
+      </span>
+
+      <span className="filtex-floating-label">
+        <span>Siguiente</span>
+        <strong>{nextLabel}</strong>
+      </span>
+    </button>
   );
 }
 
@@ -2326,9 +2368,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
-
 
 
 

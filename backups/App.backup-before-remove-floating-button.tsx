@@ -525,8 +525,51 @@ export default function App() {
         </section>
       </div>
 
-      
+      <FloatingStepButton
+        step={step}
+        totalSteps={steps.length}
+        onNext={nextStep}
+      />
     </main>
+  );
+}
+
+function FloatingStepButton({
+  step,
+  totalSteps,
+  onNext,
+}: {
+  step: number;
+  totalSteps: number;
+  onNext: () => void;
+}) {
+  if (step >= totalSteps - 1) return null;
+
+  const nextLabel = steps[step + 1];
+  const progress = ((step + 1) / totalSteps) * 100;
+
+  return (
+    <button
+      onClick={onNext}
+      className="filtex-floating-action group"
+      aria-label={`Ir al paso ${step + 2}: ${nextLabel}`}
+    >
+      <span
+        className="filtex-floating-ring"
+        style={{
+          background: `conic-gradient(#22f6c5 ${progress}%, rgba(255,255,255,0.16) ${progress}%)`,
+        }}
+      />
+
+      <span className="filtex-floating-core">
+        <ArrowRight size={26} weight="bold" />
+      </span>
+
+      <span className="filtex-floating-label">
+        <span>Siguiente</span>
+        <strong>{nextLabel}</strong>
+      </span>
+    </button>
   );
 }
 
@@ -2326,7 +2369,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

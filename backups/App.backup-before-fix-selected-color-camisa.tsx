@@ -234,12 +234,11 @@ function getProductViews(product: Product, color: string) {
     "Gris melange": "gris-melange",
     Blanco: "blanco",
     "Azul marino": "azul-marino",
-    Celeste: "celeste",
   };
 
-  if (product.id === "remera-unisex") {
-    const fileKey = colorFiles[color] ?? "negro";
+  const fileKey = colorFiles[color] ?? "negro";
 
+  if (product.id === "remera-unisex") {
     return {
       front: `/products/remera-unisex/${fileKey}-front.png`,
       back: `/products/remera-unisex/${fileKey}-back.png`,
@@ -247,8 +246,6 @@ function getProductViews(product: Product, color: string) {
   }
 
   if (product.id === "buzo-unisex") {
-    const fileKey = colorFiles[color] ?? "negro";
-
     return {
       front: `/products/buzo-unisex/${fileKey}-front.png`,
       back: `/products/buzo-unisex/${fileKey}-back.png`,
@@ -256,8 +253,6 @@ function getProductViews(product: Product, color: string) {
   }
 
   if (product.id === "chomba-pique") {
-    const fileKey = colorFiles[color] ?? "negro";
-
     return {
       front: `/products/chomba-pique-${fileKey}-front.png`,
       back: `/products/chomba-pique-${fileKey}-back.png`,
@@ -265,8 +260,6 @@ function getProductViews(product: Product, color: string) {
   }
 
   if (product.id === "camisa-oficina") {
-    const fileKey = color === "Celeste" ? "celeste" : "blanco";
-
     return {
       front: `/products/camisa-oficina/${fileKey}-front.png`,
       back: `/products/camisa-oficina/${fileKey}-back.png`,
@@ -343,10 +336,6 @@ export default function App() {
   const selectedProduct = useMemo(() => {
     return products.find((product) => product.id === selectedProductId) ?? products[0];
   }, [selectedProductId]);
-
-  useEffect(() => {
-    setSelectedColor(selectedProduct.colors[0]);
-  }, [selectedProduct.id]);
 
   useEffect(() => {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -2344,8 +2333,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
-
 
 
 

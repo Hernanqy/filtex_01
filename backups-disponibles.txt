@@ -1,0 +1,25 @@
+﻿
+Name                                                    LastWriteTime     
+----                                                    -------------     
+App.backup-before-fix-camisa-images.tsx                 15/6/2026 15:56:43
+App.backup-before-safe-camisa-folder-fix.tsx            15/6/2026 15:56:43
+App.backup-before-remove-floating-button.tsx            15/6/2026 15:55:22
+App.backup-before-real-menu-only-flow.tsx               15/6/2026 15:52:47
+App.backup-before-menu-step-flow.tsx                    15/6/2026 15:48:08
+App.backup-before-start-menu-only.tsx                   15/6/2026 15:48:08
+App.backup-before-fix-initial-active-step.tsx           15/6/2026 15:45:18
+App.backup-before-restore-selectedDecoration-app.tsx    15/6/2026 15:44:44
+App.backup-before-fix-duplicate-selectedDecoration.tsx  15/6/2026 15:44:12
+App.backup-before-fix-totalunits-selecteddecoration.tsx 13/6/2026 17:37:26
+App.backup-before-fix-missing-vars.tsx                  13/6/2026 17:36:30
+App.backup-before-needle-embroidery.tsx                 13/6/2026 17:35:12
+App.backup-before-fix-comencemos-scroll.tsx             13/6/2026 17:28:20
+App.backup-before-organic-threads-needle.tsx            13/6/2026 17:26:50
+App.backup-before-force-remove-sparkle.tsx              13/6/2026 17:25:44
+App.backup-before-fix-sparkle-and-fullwidth-threads.tsx 13/6/2026 17:23:32
+App.backup-before-curved-threads-logo.tsx               13/6/2026 17:19:40
+App.backup-before-fix-initial-scroll.tsx                13/6/2026 17:11:11
+App.backup-before-remove-reactnode.tsx                  13/6/2026 17:09:03
+App.backup-before-change-second-section-title.tsx       13/6/2026 16:57:57
+
+

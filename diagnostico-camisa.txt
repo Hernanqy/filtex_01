@@ -1,0 +1,599 @@
+﻿
+  src\App.tsx:142:    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+  src\App.tsx:143:    colors: ["Negro", "Gris topo", "Gris melange", "Azul marino"],
+  src\App.tsx:144:    icon: "hoodie",
+  src\App.tsx:145:  },
+  src\App.tsx:146:  {
+> src\App.tsx:147:    id: "chomba-pique",
+> src\App.tsx:148:    name: "Chomba piqué",
+  src\App.tsx:149:    line: "Línea oficina",
+  src\App.tsx:150:    sku: "Fh00004 / Fm00004",
+  src\App.tsx:151:    material: "Piqué 70% algodón - 30% poliéster.",
+  src\App.tsx:152:    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+  src\App.tsx:153:    colors: ["Negro", "Gris melange", "Blanco", "Azul marino"],
+  src\App.tsx:154:    icon: "office",
+  src\App.tsx:155:    views: {
+> src\App.tsx:156:      front: "/products/chomba-pique-azul-marino-front.png",
+> src\App.tsx:157:      back: "/products/chomba-pique-azul-marino-back.png",
+  src\App.tsx:158:    },
+  src\App.tsx:159:  },
+  src\App.tsx:160:  {
+> src\App.tsx:161:    id: "camisa-oficina",
+> src\App.tsx:162:    name: "Camisa oficina",
+  src\App.tsx:163:    line: "Línea oficina",
+  src\App.tsx:164:    sku: "Fh00007 / Fm00001",
+  src\App.tsx:165:    material: "Algodón con spandex. Corte fit / slim fit.",
+  src\App.tsx:166:    sizes: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+  src\App.tsx:167:    colors: ["Blanco", "Celeste"],
+  src\App.tsx:168:    icon: "office",
+  src\App.tsx:169:    views: {
+> src\App.tsx:170:      front: "/products/chomba-pique-azul-marino-front.png",
+> src\App.tsx:171:      back: "/products/chomba-pique-azul-marino-back.png",
+  src\App.tsx:172:    },
+  src\App.tsx:173:  },
+  src\App.tsx:174:  {
+  src\App.tsx:175:    id: "pantalon-cargo",
+  src\App.tsx:176:    name: "Pantalón cargo",
+  src\App.tsx:177:    line: "Línea industria",
+  src\App.tsx:178:    sku: "Fh00014",
+  src\App.tsx:179:    material: "Gabardina con spandex 8 onzas.",
+  src\App.tsx:180:    sizes: ["30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50"],
+  src\App.tsx:181:    colors: ["Negro", "Azul marino"],
+  src\App.tsx:182:    icon: "pants",
+  src\App.tsx:183:  },
+  src\App.tsx:225:
+  src\App.tsx:226:function getVisualScale(sizeCm: LogoSizeCm) {
+  src\App.tsx:227:  return sizeCm / 13;
+  src\App.tsx:228:}
+  src\App.tsx:229:
+> src\App.tsx:230:function getProductViews(product: Product, color: string) {
+> src\App.tsx:231:  const colorFiles: Record<string, string> = {
+  src\App.tsx:232:    Negro: "negro",
+  src\App.tsx:233:    "Gris topo": "gris-topo",
+  src\App.tsx:234:    "Gris melange": "gris-melange",
+  src\App.tsx:235:    Blanco: "blanco",
+  src\App.tsx:236:    "Azul marino": "azul-marino",
+  src\App.tsx:237:    "Celeste": "celeste",
+  src\App.tsx:238:  };
+  src\App.tsx:239:
+> src\App.tsx:240:  const fileKey = colorFiles[color] ?? "negro";
+  src\App.tsx:241:
+  src\App.tsx:242:  if (product.id === "remera-unisex") {
+  src\App.tsx:243:    return {
+  src\App.tsx:244:      front: `/products/remera-unisex/${fileKey}-front.png`,
+  src\App.tsx:245:      back: `/products/remera-unisex/${fileKey}-back.png`,
+  src\App.tsx:246:    };
+  src\App.tsx:247:  }
+  src\App.tsx:248:
+  src\App.tsx:249:  if (product.id === "buzo-unisex") {
+  src\App.tsx:250:    return {
+  src\App.tsx:251:      front: `/products/buzo-unisex/${fileKey}-front.png`,
+  src\App.tsx:252:      back: `/products/buzo-unisex/${fileKey}-back.png`,
+  src\App.tsx:253:    };
+  src\App.tsx:254:  }
+  src\App.tsx:255:
+> src\App.tsx:256:  if (product.id === "chomba-pique") {
+  src\App.tsx:257:    return {
+> src\App.tsx:258:      front: `/products/chomba-pique-${fileKey}-front.png`,
+> src\App.tsx:259:      back: `/products/chomba-pique-${fileKey}-back.png`,
+  src\App.tsx:260:    };
+  src\App.tsx:261:  }
+  src\App.tsx:262:
+  src\App.tsx:263:  return product.views;
+  src\App.tsx:264:}
+  src\App.tsx:265:
+  src\App.tsx:266:function createDecoration(area: LogoArea = "Pecho izquierdo"): Decoration {
+  src\App.tsx:267:  const preset = getAreaPreset(area);
+  src\App.tsx:268:
+  src\App.tsx:269:  return {
+  src\App.tsx:270:    id: crypto.randomUUID(),
+  src\App.tsx:271:    name: area,
+  src\App.tsx:307:
+  src\App.tsx:308:export default function App() {
+  src\App.tsx:309:  const [step, setStep] = useState(0);
+  src\App.tsx:310:  const [hasStarted, setHasStarted] = useState(false);
+  src\App.tsx:311:  const [client, setClient] = useState<ClientData>(initialClient);
+> src\App.tsx:312:  const [selectedProductId, setSelectedProductId] = useState(products[0].id);
+> src\App.tsx:313:  const [selectedColor, setSelectedColor] = useState(products[0].colors[0]);
+  src\App.tsx:314:  const [combos, setCombos] = useState<Combo[]>([]);
+  src\App.tsx:315:
+  src\App.tsx:316:  const totalUnits = useMemo(
+  src\App.tsx:317:    () => combos.reduce((sum, combo) => sum + combo.quantity, 0),
+  src\App.tsx:318:    [combos]
+  src\App.tsx:319:  );
+  src\App.tsx:320:  const [decorations, setDecorations] = useState<Decoration[]>([
+  src\App.tsx:321:    createDecoration("Pecho izquierdo"),
+  src\App.tsx:322:  ]);
+  src\App.tsx:323:  const [selectedDecorationId, setSelectedDecorationId] = useState(decorations[0].id);
+  src\App.tsx:324:
+  src\App.tsx:325:  const selectedDecoration =
+  src\App.tsx:326:    decorations.find((item) => item.id === selectedDecorationId) ?? decorations[0];
+  src\App.tsx:327:
+  src\App.tsx:328:  const contentRef = useRef<HTMLElement | null>(null);
+  src\App.tsx:329:
+> src\App.tsx:330:  const selectedProduct = useMemo(() => {
+> src\App.tsx:331:    return products.find((product) => product.id === selectedProductId) ?? products[0];
+> src\App.tsx:332:  }, [selectedProductId]);
+  src\App.tsx:333:
+  src\App.tsx:334:  useEffect(() => {
+  src\App.tsx:335:  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  src\App.tsx:336:}, [step]);
+  src\App.tsx:337:
+  src\App.tsx:338:  function nextStep() {
+  src\App.tsx:339:    setStep((current) => Math.min(current + 1, steps.length - 1));
+  src\App.tsx:340:  }
+  src\App.tsx:341:
+  src\App.tsx:342:  function prevStep() {
+  src\App.tsx:343:    setStep((current) => Math.max(current - 1, 0));
+  src\App.tsx:344:  }
+  src\App.tsx:405:            <div className="mt-8 rounded-[28px] border border-black/5 bg-[#f7f7f4] p-5">
+  src\App.tsx:406:              <p className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
+  src\App.tsx:407:                Estado actual
+  src\App.tsx:408:              </p>
+  src\App.tsx:409:              <div className="mt-5 space-y-4">
+> src\App.tsx:410:                <Metric label="Producto" value={selectedProduct.name} />
+  src\App.tsx:411:                <Metric label="Unidades" value={`${totalUnits}`} />
+  src\App.tsx:412:                <Metric label="Aplicaciones" value={`${decorations.length}`} />
+  src\App.tsx:413:                <Metric label="Paso actual" value={steps[step]} />
+  src\App.tsx:414:              </div>
+  src\App.tsx:415:            </div>
+  src\App.tsx:416:          </aside>
+  src\App.tsx:417:
+  src\App.tsx:418:          <section
+  src\App.tsx:419:            ref={contentRef}
+  src\App.tsx:420:            className="rounded-[34px] border border-black/5 bg-white/90 p-4 shadow-2xl backdrop-blur-sm md:p-6"
+  src\App.tsx:421:          >
+  src\App.tsx:422:            <div className="mb-6 flex flex-col justify-between gap-4 border-b border-neutral-200 pb-5">
+  src\App.tsx:470:                {step === 0 && <ClientStep client={client} setClient={setClient} />}
+  src\App.tsx:471:
+  src\App.tsx:472:                {step === 1 && (
+  src\App.tsx:473:                  <ProductStep
+  src\App.tsx:474:                    products={products}
+> src\App.tsx:475:                    selectedProductId={selectedProductId}
+> src\App.tsx:476:                    setSelectedProductId={setSelectedProductId}
+  src\App.tsx:477:                  />
+  src\App.tsx:478:                )}
+  src\App.tsx:479:
+  src\App.tsx:480:                {step === 2 && (
+  src\App.tsx:481:                  <QuantityStep
+> src\App.tsx:482:                    product={selectedProduct}
+  src\App.tsx:483:                    combos={combos}
+  src\App.tsx:484:                    setCombos={setCombos}
+> src\App.tsx:485:                    selectedColor={selectedColor}
+> src\App.tsx:486:                    setSelectedColor={setSelectedColor}
+  src\App.tsx:487:                  />
+  src\App.tsx:488:                )}
+  src\App.tsx:489:
+  src\App.tsx:490:                {step === 3 && (
+  src\App.tsx:491:                  <LogoStudio
+> src\App.tsx:492:                    product={selectedProduct}
+> src\App.tsx:493:                    selectedColor={selectedColor}
+  src\App.tsx:494:                    decorations={decorations}
+  src\App.tsx:495:                    selectedDecorationId={selectedDecorationId}
+  src\App.tsx:496:                    setSelectedDecorationId={setSelectedDecorationId}
+  src\App.tsx:497:                    selectedDecoration={selectedDecoration}
+  src\App.tsx:498:                    updateDecoration={updateDecoration}
+  src\App.tsx:499:                    addDecoration={addDecoration}
+  src\App.tsx:500:                    removeDecoration={removeDecoration}
+  src\App.tsx:501:                  />
+  src\App.tsx:502:                )}
+  src\App.tsx:503:
+  src\App.tsx:504:                {step === 4 && (
+  src\App.tsx:505:                  <SummaryStep
+  src\App.tsx:506:                    client={client}
+> src\App.tsx:507:                    product={selectedProduct}
+> src\App.tsx:508:                    selectedColor={selectedColor}
+  src\App.tsx:509:                    combos={combos}
+  src\App.tsx:510:                    decorations={decorations}
+  src\App.tsx:511:                    totalUnits={totalUnits}
+  src\App.tsx:512:                  />
+  src\App.tsx:513:                )}
+  src\App.tsx:514:
+  src\App.tsx:515:                {step < steps.length - 1 && (
+  src\App.tsx:516:                  <StepCompanion
+  src\App.tsx:517:                    step={step}
+  src\App.tsx:518:                    onNext={nextStep}
+  src\App.tsx:519:                    onPrev={prevStep}
+  src\App.tsx:520:                    disablePrev={step === 0}
+  src\App.tsx:796:  );
+  src\App.tsx:797:}
+  src\App.tsx:798:
+  src\App.tsx:799:function ProductStep({
+  src\App.tsx:800:  products,
+> src\App.tsx:801:  selectedProductId,
+> src\App.tsx:802:  setSelectedProductId,
+  src\App.tsx:803:}: {
+  src\App.tsx:804:  products: Product[];
+> src\App.tsx:805:  selectedProductId: string;
+> src\App.tsx:806:  setSelectedProductId: (id: string) => void;
+  src\App.tsx:807:}) {
+  src\App.tsx:808:  return (
+  src\App.tsx:809:    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  src\App.tsx:810:      {products.map((product) => (
+  src\App.tsx:811:        <button
+  src\App.tsx:812:          key={product.id}
+> src\App.tsx:813:          onClick={() => setSelectedProductId(product.id)}
+  src\App.tsx:814:          className={`group rounded-[30px] border p-5 text-left transition ${
+> src\App.tsx:815:            selectedProductId === product.id
+  src\App.tsx:816:              ? "border-black bg-black text-white shadow-2xl"
+  src\App.tsx:817:              : "border-neutral-200 bg-[#fafaf8] hover:-translate-y-1 hover:border-black hover:bg-white hover:shadow-xl"
+  src\App.tsx:818:          }`}
+  src\App.tsx:819:        >
+  src\App.tsx:820:          <div className="mb-5 flex h-36 items-center justify-center rounded-[24px] bg-white text-black">
+  src\App.tsx:821:            <ProductIcon type={product.icon} size={72} />
+  src\App.tsx:822:          </div>
+  src\App.tsx:823:
+  src\App.tsx:824:          <p
+  src\App.tsx:825:            className={`mb-2 text-xs font-black uppercase tracking-[0.2em] ${
+> src\App.tsx:826:              selectedProductId === product.id ? "text-neutral-400" : "text-neutral-500"
+  src\App.tsx:827:            }`}
+  src\App.tsx:828:          >
+  src\App.tsx:829:            {product.line}
+  src\App.tsx:830:          </p>
+  src\App.tsx:831:
+  src\App.tsx:832:          <h3 className="text-2xl font-black tracking-[-0.05em]">{product.name}</h3>
+  src\App.tsx:833:
+  src\App.tsx:834:          <p
+  src\App.tsx:835:            className={`mt-1 text-sm ${
+> src\App.tsx:836:              selectedProductId === product.id ? "text-neutral-400" : "text-neutral-500"
+  src\App.tsx:837:            }`}
+  src\App.tsx:838:          >
+  src\App.tsx:839:            SKU {product.sku}
+  src\App.tsx:840:          </p>
+  src\App.tsx:841:
+  src\App.tsx:842:          <p
+  src\App.tsx:843:            className={`mt-4 text-sm leading-6 ${
+> src\App.tsx:844:              selectedProductId === product.id ? "text-neutral-300" : "text-neutral-500"
+  src\App.tsx:845:            }`}
+  src\App.tsx:846:          >
+  src\App.tsx:847:            {product.material}
+  src\App.tsx:848:          </p>
+  src\App.tsx:849:        </button>
+  src\App.tsx:850:      ))}
+  src\App.tsx:851:    </div>
+  src\App.tsx:852:  );
+  src\App.tsx:853:}
+  src\App.tsx:854:
+  src\App.tsx:855:function ProductIcon({ type, size = 56 }: { type: Product["icon"]; size?: number }) {
+  src\App.tsx:856:  const props = { size, weight: "duotone" as const };
+  src\App.tsx:864:
+  src\App.tsx:865:function QuantityStep({
+  src\App.tsx:866:  product,
+  src\App.tsx:867:  combos,
+  src\App.tsx:868:  setCombos,
+> src\App.tsx:869:  selectedColor,
+> src\App.tsx:870:  setSelectedColor,
+  src\App.tsx:871:}: {
+  src\App.tsx:872:  product: Product;
+  src\App.tsx:873:  combos: Combo[];
+  src\App.tsx:874:  setCombos: Dispatch<SetStateAction<Combo[]>>;
+> src\App.tsx:875:  selectedColor: string;
+> src\App.tsx:876:  setSelectedColor: Dispatch<SetStateAction<string>>;
+  src\App.tsx:877:}) {
+  src\App.tsx:878:  const [size, setSize] = useState(product.sizes[0]);
+  src\App.tsx:879:  const [quantity, setQuantity] = useState(10);
+  src\App.tsx:880:
+  src\App.tsx:881:  useEffect(() => {
+> src\App.tsx:882:    setSelectedColor(product.colors[0]);
+  src\App.tsx:883:    setSize(product.sizes[0]);
+> src\App.tsx:884:  }, [product, setSelectedColor]);
+  src\App.tsx:885:
+  src\App.tsx:886:  function addCombo() {
+  src\App.tsx:887:    if (!quantity || quantity < 1) return;
+  src\App.tsx:888:
+  src\App.tsx:889:    setCombos((current) => [
+  src\App.tsx:890:      ...current,
+  src\App.tsx:891:      {
+  src\App.tsx:892:        id: crypto.randomUUID(),
+  src\App.tsx:893:        productId: product.id,
+  src\App.tsx:894:        productName: product.name,
+  src\App.tsx:895:        sku: product.sku,
+> src\App.tsx:896:        color: selectedColor,
+  src\App.tsx:897:        size,
+  src\App.tsx:898:        quantity,
+  src\App.tsx:899:      },
+  src\App.tsx:900:    ]);
+  src\App.tsx:901:  }
+  src\App.tsx:902:
+  src\App.tsx:903:  return (
+  src\App.tsx:904:    <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
+  src\App.tsx:905:      <section className="rounded-[30px] bg-black p-6 text-white">
+  src\App.tsx:906:        <Package size={42} weight="duotone" />
+  src\App.tsx:907:        <h3 className="mt-5 text-3xl font-black tracking-[-0.06em]">
+  src\App.tsx:908:          Cargá combinaciones
+  src\App.tsx:912:        </p>
+  src\App.tsx:913:
+  src\App.tsx:914:        <div className="mt-8 grid gap-4">
+  src\App.tsx:915:          <Select
+  src\App.tsx:916:            label="Color"
+> src\App.tsx:917:            value={selectedColor}
+  src\App.tsx:918:            options={product.colors}
+> src\App.tsx:919:            onChange={setSelectedColor}
+  src\App.tsx:920:          />
+  src\App.tsx:921:          <Select label="Talle" value={size} options={product.sizes} onChange={setSize} />
+  src\App.tsx:922:
+  src\App.tsx:923:          <label className="grid gap-2">
+  src\App.tsx:924:            <span className="text-sm font-black">Cantidad</span>
+  src\App.tsx:925:            <input
+  src\App.tsx:926:              type="number"
+  src\App.tsx:927:              min={1}
+  src\App.tsx:928:              value={quantity}
+  src\App.tsx:929:              onChange={(event) => setQuantity(Number(event.target.value))}
+  src\App.tsx:930:              className="rounded-[22px] border border-white/10 bg-white px-5 py-4 text-black outline-none"
+  src\App.tsx:931:            />
+  src\App.tsx:1018:  );
+  src\App.tsx:1019:}
+  src\App.tsx:1020:
+  src\App.tsx:1021:function LogoStudio({
+  src\App.tsx:1022:  product,
+> src\App.tsx:1023:  selectedColor,
+  src\App.tsx:1024:  decorations,
+  src\App.tsx:1025:  selectedDecorationId,
+  src\App.tsx:1026:  setSelectedDecorationId,
+  src\App.tsx:1027:  selectedDecoration,
+  src\App.tsx:1028:  updateDecoration,
+  src\App.tsx:1029:  addDecoration,
+  src\App.tsx:1030:  removeDecoration,
+  src\App.tsx:1031:}: {
+  src\App.tsx:1032:  product: Product;
+> src\App.tsx:1033:  selectedColor: string;
+  src\App.tsx:1034:  decorations: Decoration[];
+  src\App.tsx:1035:  selectedDecorationId: string;
+  src\App.tsx:1036:  setSelectedDecorationId: (id: string) => void;
+  src\App.tsx:1037:  selectedDecoration: Decoration;
+  src\App.tsx:1038:  updateDecoration: (id: string, updates: Partial<Decoration>) => void;
+  src\App.tsx:1039:  addDecoration: (area?: LogoArea) => Decoration;
+  src\App.tsx:1040:  removeDecoration: (id: string) => void;
+  src\App.tsx:1041:}) {
+  src\App.tsx:1042:
+  src\App.tsx:1043:  const [manualSide, setManualSide] = useState<GarmentSide>(selectedDecoration.side);
+  src\App.tsx:1044:  const [showModelPreview, setShowModelPreview] = useState(false);
+  src\App.tsx:1045:
+  src\App.tsx:1134:          </div>
+  src\App.tsx:1135:        </div>
+  src\App.tsx:1136:
+  src\App.tsx:1137:        <GarmentCanvas
+  src\App.tsx:1138:          product={product}
+> src\App.tsx:1139:          selectedColor={selectedColor}
+  src\App.tsx:1140:          side={visibleSide}
+  src\App.tsx:1141:          decorations={decorations.filter((item) => item.side === visibleSide)}
+  src\App.tsx:1142:          selectedDecorationId={selectedDecorationId}
+  src\App.tsx:1143:          setSelectedDecorationId={setSelectedDecorationId}
+  src\App.tsx:1144:          updateDecoration={updateDecoration}
+  src\App.tsx:1145:        />
+  src\App.tsx:1146:      </section>
+  src\App.tsx:1147:
+  src\App.tsx:1148:      <section className="rounded-[34px] bg-black p-5 text-white">
+  src\App.tsx:1149:        <div className="mb-4 flex items-center justify-between gap-3">
+  src\App.tsx:1150:          <div>
+  src\App.tsx:1151:            <p className="text-xs font-black uppercase tracking-[0.22em] text-neutral-500">
+  src\App.tsx:1280:      </section>
+  src\App.tsx:1281:
+  src\App.tsx:1282:      {showModelPreview && (
+  src\App.tsx:1283:        <ModelPreviewModal
+  src\App.tsx:1284:          product={product}
+> src\App.tsx:1285:          selectedColor={selectedColor}
+  src\App.tsx:1286:          decorations={decorations.filter((item) => item.side === "Delantera")}
+  src\App.tsx:1287:          onClose={() => setShowModelPreview(false)}
+  src\App.tsx:1288:        />
+  src\App.tsx:1289:      )}
+  src\App.tsx:1290:    </div>
+  src\App.tsx:1291:  );
+  src\App.tsx:1292:}
+  src\App.tsx:1293:
+  src\App.tsx:1294:function ModelPreviewModal({
+  src\App.tsx:1295:  product,
+> src\App.tsx:1296:  selectedColor,
+  src\App.tsx:1297:  decorations,
+  src\App.tsx:1298:  onClose,
+  src\App.tsx:1299:}: {
+  src\App.tsx:1300:  product: Product;
+> src\App.tsx:1301:  selectedColor: string;
+  src\App.tsx:1302:  decorations: Decoration[];
+  src\App.tsx:1303:  onClose: () => void;
+  src\App.tsx:1304:}) {
+> src\App.tsx:1305:  const garmentImage = getProductViews(product, selectedColor)?.front;
+  src\App.tsx:1306:
+  src\App.tsx:1307:  return (
+  src\App.tsx:1308:    <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-sm">
+  src\App.tsx:1309:      <div className="relative w-full max-w-5xl overflow-hidden rounded-[36px] bg-[#f4f4f1] p-5 shadow-2xl">
+  src\App.tsx:1310:        <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-center">
+  src\App.tsx:1311:          <div>
+  src\App.tsx:1312:            <p className="text-xs font-black uppercase tracking-[0.24em] text-neutral-400">
+  src\App.tsx:1313:              Preview en modelo
+  src\App.tsx:1314:            </p>
+  src\App.tsx:1315:            <h3 className="text-4xl font-black tracking-[-0.06em]">
+  src\App.tsx:1316:              {product.name}
+  src\App.tsx:1317:            </h3>
+  src\App.tsx:1404:  );
+  src\App.tsx:1405:}
+  src\App.tsx:1406:
+  src\App.tsx:1407:function GarmentCanvas({
+  src\App.tsx:1408:  product,
+> src\App.tsx:1409:  selectedColor,
+  src\App.tsx:1410:  side,
+  src\App.tsx:1411:  decorations,
+  src\App.tsx:1412:  selectedDecorationId,
+  src\App.tsx:1413:  setSelectedDecorationId,
+  src\App.tsx:1414:  updateDecoration,
+  src\App.tsx:1415:}: {
+  src\App.tsx:1416:  product: Product;
+> src\App.tsx:1417:  selectedColor: string;
+  src\App.tsx:1418:  side: GarmentSide;
+  src\App.tsx:1419:  decorations: Decoration[];
+  src\App.tsx:1420:  selectedDecorationId: string;
+  src\App.tsx:1421:  setSelectedDecorationId: (id: string) => void;
+  src\App.tsx:1422:  updateDecoration: (id: string, updates: Partial<Decoration>) => void;
+  src\App.tsx:1423:}) {
+  src\App.tsx:1424:  const canvasRef = useRef<HTMLDivElement | null>(null);
+  src\App.tsx:1425:
+  src\App.tsx:1426:  function getPoint(event: ReactPointerEvent<HTMLDivElement>) {
+  src\App.tsx:1427:    const rect = canvasRef.current?.getBoundingClientRect();
+  src\App.tsx:1428:
+  src\App.tsx:1429:    if (!rect) return null;
+  src\App.tsx:1443:    if (!point) return;
+  src\App.tsx:1444:
+  src\App.tsx:1445:    updateDecoration(id, point);
+  src\App.tsx:1446:  }
+  src\App.tsx:1447:
+> src\App.tsx:1448:  const productViews = getProductViews(product, selectedColor);
+  src\App.tsx:1449:
+  src\App.tsx:1450:  const garmentImage =
+  src\App.tsx:1451:    productViews
+  src\App.tsx:1452:      ? side === "Delantera"
+  src\App.tsx:1453:        ? productViews.front
+  src\App.tsx:1454:        : productViews.back
+  src\App.tsx:1455:      : null;
+  src\App.tsx:1456:
+  src\App.tsx:1457:  return (
+  src\App.tsx:1458:    <div className="relative min-h-[620px] overflow-hidden rounded-[32px] bg-gradient-to-br from-white via-neutral-100 to-neutral-300">
+  src\App.tsx:1459:      <div className="absolute inset-0 opacity-[0.06] 
+[background-image:linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] [background-size:34px_34px]" />
+  src\App.tsx:1460:
+  src\App.tsx:1642:}
+  src\App.tsx:1643:
+  src\App.tsx:1644:function SummaryStep({
+  src\App.tsx:1645:  client,
+  src\App.tsx:1646:  product,
+> src\App.tsx:1647:  selectedColor,
+  src\App.tsx:1648:  combos,
+  src\App.tsx:1649:  decorations,
+  src\App.tsx:1650:  totalUnits,
+  src\App.tsx:1651:}: {
+  src\App.tsx:1652:  client: ClientData;
+  src\App.tsx:1653:  product: Product;
+> src\App.tsx:1654:  selectedColor: string;
+  src\App.tsx:1655:  combos: Combo[];
+  src\App.tsx:1656:  decorations: Decoration[];
+  src\App.tsx:1657:  totalUnits: number;
+  src\App.tsx:1658:}) {
+  src\App.tsx:1659:  const [phase, setPhase] = useState<"idle" | "processing" | "done">("idle");
+  src\App.tsx:1660:  const [confirmProgress, setConfirmProgress] = useState(0);
+  src\App.tsx:1661:  const [currentCheck, setCurrentCheck] = useState(0);
+  src\App.tsx:1662:  const orderRef = useRef<HTMLDivElement | null>(null);
+  src\App.tsx:1663:
+  src\App.tsx:1664:  const frontDecorations = decorations.filter((item) => item.side === "Delantera");
+  src\App.tsx:1665:  const backDecorations = decorations.filter((item) => item.side === "Espalda");
+> src\App.tsx:1666:  const productViews = getProductViews(product, selectedColor);
+  src\App.tsx:1667:
+  src\App.tsx:1668:  const companyName = client.company || "Cliente sin completar";
+  src\App.tsx:1669:  const contactName = client.contact || "Contacto sin completar";
+  src\App.tsx:1670:  const createdAt = new Date().toLocaleString("es-AR");
+  src\App.tsx:1671:  const orderNumber = `FILTEX-${Date.now().toString().slice(-6)}`;
+  src\App.tsx:1672:
+  src\App.tsx:1673:  const checks = [
+  src\App.tsx:1674:    "Validando datos del cliente",
+  src\App.tsx:1675:    "Revisando cantidades y combinaciones",
+  src\App.tsx:1676:    "Preparando guía visual del taller",
+  src\App.tsx:1677:    "Habilitando descarga y envío",
+  src\App.tsx:1678:  ];
+  src\App.tsx:1743:    return [
+  src\App.tsx:1744:      `Orden Filtex ${orderNumber}`,
+  src\App.tsx:1745:      `Cliente: ${companyName}`,
+  src\App.tsx:1746:      `Contacto: ${contactName}`,
+  src\App.tsx:1747:      `Producto: ${product.name}`,
+> src\App.tsx:1748:      `Color visual: ${selectedColor}`,
+  src\App.tsx:1749:      `Total: ${totalUnits} unidades`,
+  src\App.tsx:1750:      `Aplicaciones: ${decorations.length}`,
+  src\App.tsx:1751:      "",
+  src\App.tsx:1752:      "Adjunto la orden visual JPG para usar como guía de producción.",
+  src\App.tsx:1753:    ].join("\n");
+  src\App.tsx:1754:  }
+  src\App.tsx:1755:
+  src\App.tsx:1756:  async function sendByWhatsapp() {
+  src\App.tsx:1757:    await downloadJpg();
+  src\App.tsx:1758:    const message = encodeURIComponent(buildMessage());
+  src\App.tsx:1759:    window.open(`https://wa.me/?text=${message}`, "_blank");
+  src\App.tsx:1760:  }
+  src\App.tsx:1801:              <span>Producto</span>
+  src\App.tsx:1802:              <strong>{product.name}</strong>
+  src\App.tsx:1803:            </div>
+  src\App.tsx:1804:            <div className="confirm-stat-tile">
+  src\App.tsx:1805:              <span>Color</span>
+> src\App.tsx:1806:              <strong>{selectedColor}</strong>
+  src\App.tsx:1807:            </div>
+  src\App.tsx:1808:            <div className="confirm-stat-tile">
+  src\App.tsx:1809:              <span>Aplicaciones</span>
+  src\App.tsx:1810:              <strong>{decorations.length}</strong>
+  src\App.tsx:1811:            </div>
+  src\App.tsx:1812:            <div className="confirm-stat-tile">
+  src\App.tsx:1813:              <span>Cliente</span>
+  src\App.tsx:1814:              <strong>{client.company || "Sin cargar"}</strong>
+  src\App.tsx:1815:            </div>
+  src\App.tsx:1816:          </div>
+  src\App.tsx:1817:
+  src\App.tsx:1818:          <div className="confirm-equalizer mt-7">
+  src\App.tsx:1855:            <ReviewCard label="Empresa" value={companyName} />
+  src\App.tsx:1856:            <ReviewCard label="Contacto" value={contactName} />
+  src\App.tsx:1857:            <ReviewCard label="WhatsApp" value={client.whatsapp || "Sin completar"} />
+  src\App.tsx:1858:            <ReviewCard label="Email" value={client.email || "Sin completar"} />
+  src\App.tsx:1859:            <ReviewCard label="Producto" value={product.name} />
+> src\App.tsx:1860:            <ReviewCard label="Color visual" value={selectedColor} />
+  src\App.tsx:1861:            <ReviewCard label="Total unidades" value={`${totalUnits}`} />
+  src\App.tsx:1862:            <ReviewCard label="Aplicaciones" value={`${decorations.length}`} />
+  src\App.tsx:1863:          </div>
+  src\App.tsx:1864:
+  src\App.tsx:1865:          <div className="mt-5 rounded-[28px] bg-white p-5">
+  src\App.tsx:1866:            <p className="mb-3 text-sm font-black">Combinaciones</p>
+  src\App.tsx:1867:
+  src\App.tsx:1868:            {combos.length === 0 ? (
+  src\App.tsx:1869:              <p className="text-sm text-neutral-500">No hay combinaciones cargadas.</p>
+  src\App.tsx:1870:            ) : (
+  src\App.tsx:1871:              <div className="grid gap-2">
+  src\App.tsx:1872:                {combos.map((combo) => (
+  src\App.tsx:1959:          </div>
+  src\App.tsx:1960:
+  src\App.tsx:1961:          <div className="grid gap-4 md:grid-cols-2">
+  src\App.tsx:1962:            <ReviewCard label="Empresa" value={companyName} />
+  src\App.tsx:1963:            <ReviewCard label="Producto" value={product.name} />
+> src\App.tsx:1964:            <ReviewCard label="Color visual" value={selectedColor} />
+  src\App.tsx:1965:            <ReviewCard label="Total unidades" value={`${totalUnits}`} />
+  src\App.tsx:1966:          </div>
+  src\App.tsx:1967:
+  src\App.tsx:1968:          <div className="mt-6 rounded-[28px] bg-white p-5">
+  src\App.tsx:1969:            <div className="mb-4 flex items-center justify-between gap-3">
+  src\App.tsx:1970:              <p className="text-sm font-black">Avance</p>
+  src\App.tsx:1971:              <span className="text-sm font-black text-[#58b300]">{confirmProgress}%</span>
+  src\App.tsx:1972:            </div>
+  src\App.tsx:1973:
+  src\App.tsx:1974:            <div className="h-3 overflow-hidden rounded-full bg-neutral-200">
+  src\App.tsx:1975:              <div
+  src\App.tsx:1976:                className="confirm-progress-bar"
+  src\App.tsx:2047:              <span>Producto</span>
+  src\App.tsx:2048:              <strong>{product.name}</strong>
+  src\App.tsx:2049:            </div>
+  src\App.tsx:2050:            <div>
+  src\App.tsx:2051:              <span>Color visual</span>
+> src\App.tsx:2052:              <strong>{selectedColor}</strong>
+  src\App.tsx:2053:            </div>
+  src\App.tsx:2054:            <div>
+  src\App.tsx:2055:              <span>Aplicaciones</span>
+  src\App.tsx:2056:              <strong>{decorations.length} logos</strong>
+  src\App.tsx:2057:            </div>
+  src\App.tsx:2058:          </section>
+  src\App.tsx:2059:
+  src\App.tsx:2060:          <section className="mb-6 grid gap-3 sm:grid-cols-2 md:mb-8 lg:grid-cols-4">
+  src\App.tsx:2061:            <InfoBlock label="Empresa" value={companyName} />
+  src\App.tsx:2062:            <InfoBlock label="Contacto" value={contactName} />
+  src\App.tsx:2063:            <InfoBlock label="WhatsApp" value={client.whatsapp || "Sin completar"} />
+  src\App.tsx:2064:            <InfoBlock label="Email" value={client.email || "Sin completar"} />
+  src\App.tsx:2073:                <h4 className="text-2xl font-black tracking-[-0.06em] sm:text-3xl">
+  src\App.tsx:2074:                  {product.name}
+  src\App.tsx:2075:                </h4>
+  src\App.tsx:2076:                <p className="mt-1 text-sm text-neutral-500">SKU {product.sku}</p>
+  src\App.tsx:2077:                <p className="mt-1 text-sm font-black text-neutral-700">
+> src\App.tsx:2078:                  Color visual: {selectedColor}
+  src\App.tsx:2079:                </p>
+  src\App.tsx:2080:              </div>
+  src\App.tsx:2081:
+  src\App.tsx:2082:              <p className="max-w-md text-sm leading-6 text-neutral-500">
+  src\App.tsx:2083:                {product.material}
+  src\App.tsx:2084:              </p>
+  src\App.tsx:2085:            </div>
+  src\App.tsx:2086:
+  src\App.tsx:2087:            <div className="overflow-x-auto rounded-[18px] border border-neutral-200 sm:rounded-[22px]">
+  src\App.tsx:2088:              <table className="w-full min-w-[560px] border-collapse text-xs sm:text-sm">
+  src\App.tsx:2089:                <thead className="bg-black text-white">
+  src\App.tsx:2090:                  <tr>
+
+

@@ -282,29 +282,6 @@ function getProductViews(product: Product, color: string) {
     };
   }
 
-  if (product.id === "campera-softshell") {
-    const fileKey = color === "Azul marino" ? "azul-marino" : "negro";
-
-    return {
-      front: `/products/campera-softshell/${fileKey}-front.png`,
-      back: `/products/campera-softshell/${fileKey}-back.png`,
-    };
-  }
-
-  if (product.id === "campera-polar") {
-    const fileKey =
-      color === "Azul marino"
-        ? "azul-marino"
-        : color === "Gris topo"
-          ? "gris-topo"
-          : "negro";
-
-    return {
-      front: `/products/campera-polar/${fileKey}-front.png`,
-      back: `/products/campera-polar/${fileKey}-back.png`,
-    };
-  }
-
   return product.views;
 }
 
@@ -2376,7 +2353,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 

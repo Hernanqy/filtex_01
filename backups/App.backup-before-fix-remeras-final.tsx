@@ -235,7 +235,6 @@ function getProductViews(product: Product, color: string) {
     Blanco: "blanco",
     "Azul marino": "azul-marino",
     Celeste: "celeste",
-    Beige: "beige",
   };
 
   if (product.id === "remera-unisex") {
@@ -2377,7 +2376,6 @@ function OrderGarmentView({
     </div>
   );
 }
-
 
 
 
